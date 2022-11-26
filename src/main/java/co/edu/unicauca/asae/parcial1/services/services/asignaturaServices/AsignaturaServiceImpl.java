@@ -14,7 +14,7 @@ import co.edu.unicauca.asae.parcial1.repositories.AsignaturaRepository;
 import co.edu.unicauca.asae.parcial1.services.DTO.AsignaturaDTO;
 
 @Service
-public class AsignaturaServiceImpl implements IAsignturaServices{
+public class AsignaturaServiceImpl implements IAsignturaService{
 
     @Autowired
 	private AsignaturaRepository servicioAccesoBaseDatos;
@@ -27,8 +27,7 @@ public class AsignaturaServiceImpl implements IAsignturaServices{
     public AsignaturaDTO findById(Integer id) {
         Optional<Asignatura> optional = this.servicioAccesoBaseDatos.findById(id);
         Asignatura asignatura = optional.get();
-        AsignaturaDTO asignaturaDTO = this.modelMapper.map(asignatura, new TypeToken<List<AsignaturaDTO>>() {
-		}.getType());
+        AsignaturaDTO asignaturaDTO = this.modelMapper.map(asignatura, AsignaturaDTO.class);
         return asignaturaDTO;
     }
     

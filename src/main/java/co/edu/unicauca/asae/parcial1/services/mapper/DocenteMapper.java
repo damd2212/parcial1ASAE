@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class DocenteMapper {
     
-    @Bean
+   // @Bean
     public ModelMapper modelMapper() {
         ModelMapper objMapper = new ModelMapper();
         //TypeMap<ClienteEntity, ClienteDTO> mapa = objMapper.emptyTypeMap(ClienteEntity.class, ClienteDTO.class);

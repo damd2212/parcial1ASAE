@@ -14,10 +14,10 @@ public class AsignaturaMapper {
     public ModelMapper modelMapper() {
         ModelMapper objMapper = new ModelMapper();
         TypeMap<Asignatura, AsignaturaDTO> mapa = objMapper.emptyTypeMap(Asignatura.class, AsignaturaDTO.class);
-        // mapa.addMappings(m ->
-        // m.skip(ClienteDTO::setObjDireccion)).implicitMappings();
+        
         // mapa.addMappings(m -> m.skip(ClienteDTO::setSolicitudes)).implicitMappings();
         //mapa.addMappings(m -> m.skip(ClienteDTO::setCreateAt)).implicitMappings();
+        mapa.addMappings(m -> m.skip(AsignaturaDTO::setListaCursos)).implicitMappings();
         return objMapper;
     }
 }
