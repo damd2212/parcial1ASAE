@@ -32,6 +32,7 @@ public class Asignatura {
     @Column(nullable = false,length = 30)
     private String nombre;
 
+    //Preguntar si el fetch es EAGER o no
     @ManyToMany(cascade = {CascadeType.PERSIST},fetch = FetchType.EAGER)
     @JoinTable(name = "Docentes_Asignaturas",
                joinColumns = @JoinColumn(name = "idAsignatura"),
@@ -39,7 +40,8 @@ public class Asignatura {
     )
     private List<Docente> listaDocentes;
 
-    @OneToMany(cascade = {CascadeType.PERSIST,CascadeType.REMOVE},fetch = FetchType.EAGER, mappedBy = "objAsignatura")
+    //Preguntar si el fetch es EAGER o no
+    @OneToMany(cascade = {CascadeType.PERSIST,CascadeType.REMOVE},fetch = FetchType.LAZY, mappedBy = "objAsignatura")
     private List<Curso> listaCursos;
 
 }
