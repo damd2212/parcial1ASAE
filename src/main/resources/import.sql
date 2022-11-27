@@ -4,6 +4,8 @@ INSERT INTO `docente` (`noIdentificacion`, `tipoIdentificacion`, `nombres`,`apel
 INSERT INTO `asignaturas` (`nombre`) VALUES ('Sistemas distribuidos');
 
 INSERT INTO `cursos` (`idCurso`,`nombre`,`periodo`,`idAsignatura`) VALUES ('100',"Grupo A",2,1);
+INSERT INTO `cursos` (`idCurso`,`nombre`,`periodo`,`idAsignatura`) VALUES ('101',"Grupo B",2,1);
+INSERT INTO `cursos` (`idCurso`,`nombre`,`periodo`,`idAsignatura`) VALUES ('103',"Grupo C",2,1);
 
 INSERT INTO `Docentes_Asignaturas` (`idDocente`,`idAsignatura`) VALUES (1,1);
 INSERT INTO `Docentes_Asignaturas` (`idDocente`,`idAsignatura`) VALUES (2,1);

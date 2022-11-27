@@ -33,7 +33,7 @@ public class Asignatura {
     private String nombre;
 
     //Preguntar si el fetch es EAGER o no
-    @ManyToMany(cascade = {CascadeType.PERSIST},fetch = FetchType.EAGER)
+    @ManyToMany(cascade = {CascadeType.PERSIST},fetch = FetchType.LAZY)
     @JoinTable(name = "Docentes_Asignaturas",
                joinColumns = @JoinColumn(name = "idAsignatura"),
                inverseJoinColumns = @JoinColumn(name = "idDocente")
@@ -41,7 +41,8 @@ public class Asignatura {
     private List<Docente> listaDocentes;
 
     //Preguntar si el fetch es EAGER o no
-    @OneToMany(cascade = {CascadeType.PERSIST,CascadeType.REMOVE},fetch = FetchType.LAZY, mappedBy = "objAsignatura")
+    //Para el punto H el fetch es tipo EAGER por ende en la lista de docentes lo cambie a LAZY
+    @OneToMany(cascade = {CascadeType.PERSIST,CascadeType.REMOVE},fetch = FetchType.EAGER, mappedBy = "objAsignatura")
     private List<Curso> listaCursos;
 
 }
