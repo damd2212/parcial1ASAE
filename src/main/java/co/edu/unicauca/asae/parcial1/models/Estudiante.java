@@ -19,11 +19,11 @@ public class Estudiante extends Persona{
     
     @Column(nullable = false)
     private Date fechaIngreso;
-
-    @OneToMany(cascade = {CascadeType.PERSIST,CascadeType.REMOVE,CascadeType.REFRESH},fetch = FetchType.LAZY, mappedBy = "objEstudiante")
+    //Para el punto f es Eager
+    @OneToMany(cascade = {CascadeType.PERSIST,CascadeType.REMOVE,CascadeType.REFRESH},fetch = FetchType.EAGER, mappedBy = "objEstudiante")
     private List<Telefono> listaTelefonos;
-
-	@OneToOne(optional = false, cascade = { CascadeType.PERSIST,CascadeType.REMOVE}, fetch = FetchType.LAZY, mappedBy = "objEstudiante")
+    ////Para el punto f es Eager
+	@OneToOne(optional = false, cascade = { CascadeType.PERSIST,CascadeType.REMOVE}, fetch = FetchType.EAGER, mappedBy = "objEstudiante")
     private Direccion objDireccion;
 
 

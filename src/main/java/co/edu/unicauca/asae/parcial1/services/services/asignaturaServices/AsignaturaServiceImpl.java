@@ -1,5 +1,7 @@
 package co.edu.unicauca.asae.parcial1.services.services.asignaturaServices;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
@@ -27,6 +29,17 @@ public class AsignaturaServiceImpl implements IAsignturaService{
         Asignatura asignatura = optional.get();
         AsignaturaDTO asignaturaDTO = this.modelMapper.map(asignatura, AsignaturaDTO.class);
         return asignaturaDTO;
+    }
+    @Override
+    @Transactional()
+    public AsignaturaDTO save(AsignaturaDTO prmAsignatura){
+        Asignatura objAsignatura=this.modelMapper.map(prmAsignatura, Asignatura.class);
+        objAsignatura.getListaCursos().forEach(objCurso->objCurso.setObjAsignatura(objAsignatura));
+        objAsignatura.getListaDocentes().forEach(objDocente->objDocente.setListaAsignaturas(new ArrayList<>(Arrays.asList(objAsignatura))));
+
+        Asignatura objAsignaturaRta=this.servicioAccesoBaseDatos.save(objAsignatura);
+        AsignaturaDTO objAsignaturaDTO=this.modelMapper.map(objAsignaturaRta, AsignaturaDTO.class);
+        return objAsignaturaDTO;
     }
     
 }

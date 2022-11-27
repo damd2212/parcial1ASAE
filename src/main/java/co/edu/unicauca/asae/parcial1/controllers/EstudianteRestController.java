@@ -21,4 +21,10 @@ public class EstudianteRestController {
         objEstudainte = estudianteService.findById(id);
         return objEstudainte;
     }
+    @GetMapping("/estudiantesEager/{id}")
+    public EstudianteDTO findByIdEager(@PathVariable Integer id){
+        EstudianteDTO objEstudainte = null;
+        objEstudainte = estudianteService.findById(id);
+        return objEstudainte;
+    }
 }

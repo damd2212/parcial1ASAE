@@ -26,11 +26,11 @@ public class Mapper {
         /*-------------------------------- 
          * Mapper para el estudiante
         */
-
-        TypeMap<Estudiante, EstudianteDTO> mapa = objMapper.emptyTypeMap(Estudiante.class, EstudianteDTO.class);
-        
-        mapa.addMappings(m -> m.skip(EstudianteDTO::setObjDireccion)).implicitMappings();
-        mapa.addMappings(m -> m.skip(EstudianteDTO::setListaTelefonos)).implicitMappings();
+        //Para el Punto f comentamos 
+        //TypeMap<Estudiante, EstudianteDTO> mapa = objMapper.emptyTypeMap(Estudiante.class, EstudianteDTO.class);
+         
+        //mapa.addMappings(m -> m.skip(EstudianteDTO::setObjDireccion)).implicitMappings();
+        //mapa.addMappings(m -> m.skip(EstudianteDTO::setListaTelefonos)).implicitMappings();
         
         //mapa.addMappings(m -> m.skip(ClienteDTO::setCreateAt)).implicitMappings();
         //mapa.addMappings(m -> m.skip(AsignaturaDTO::setListaCursos)).implicitMappings();
