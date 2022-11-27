@@ -1,5 +1,7 @@
 package co.edu.unicauca.asae.parcial1.services.DTO;
 
+import java.util.List;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -9,15 +11,18 @@ public class DocenteDTO extends PersonaDTO {
     private String tipoDocente;
     private float salario;
 
+    private List<AsignaturaDTO> listaAsignatura;
+
 
     public DocenteDTO(){
         super();
     }
     
-    public DocenteDTO(Integer idPersona, String noIdentificacion, String tipoIdentificacion,String nombres, String apellidos, String universidad, String tipoDocente, float salario){
+    public DocenteDTO(Integer idPersona, String noIdentificacion, String tipoIdentificacion,String nombres, String apellidos, String universidad, String tipoDocente, float salario, List<AsignaturaDTO> listaAsignaturas){
         super(idPersona,noIdentificacion,tipoIdentificacion,nombres,apellidos);
         this.universidad = universidad;
         this.tipoDocente = tipoDocente;
         this.salario = salario;
+        this.listaAsignatura = listaAsignaturas;
     }
 }
