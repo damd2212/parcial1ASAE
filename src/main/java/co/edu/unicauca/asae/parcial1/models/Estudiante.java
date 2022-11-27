@@ -20,10 +20,10 @@ public class Estudiante extends Persona{
     @Column(nullable = false)
     private Date fechaIngreso;
 
-    @OneToMany(cascade = {CascadeType.PERSIST,CascadeType.REMOVE,CascadeType.REFRESH},fetch = FetchType.EAGER, mappedBy = "objEstudiante")
+    @OneToMany(cascade = {CascadeType.PERSIST,CascadeType.REMOVE,CascadeType.REFRESH},fetch = FetchType.LAZY, mappedBy = "objEstudiante")
     private List<Telefono> listaTelefonos;
 
-	@OneToOne(optional = false, cascade = { CascadeType.PERSIST,CascadeType.REMOVE}, fetch = FetchType.EAGER, mappedBy = "objEstudiante")
+	@OneToOne(optional = false, cascade = { CascadeType.PERSIST,CascadeType.REMOVE}, fetch = FetchType.LAZY, mappedBy = "objEstudiante")
     private Direccion objDireccion;
 
 
@@ -31,9 +31,11 @@ public class Estudiante extends Persona{
         super();
     }
     
-    public Estudiante(Integer idPersona, String noIdentificacion, String tipoIdentificacion,String nombres, String apellidos, Date fechaIngreso){
+    public Estudiante(Integer idPersona, String noIdentificacion, String tipoIdentificacion,String nombres, String apellidos, Date fechaIngreso, List<Telefono> listaTelefonos, Direccion prmDireccion){
         super(idPersona,noIdentificacion,tipoIdentificacion,nombres,apellidos);
         this.fechaIngreso = fechaIngreso;
+        this.listaTelefonos = listaTelefonos;
+        this.objDireccion = prmDireccion;
     }
 
 }
