@@ -17,17 +17,18 @@ public class Mapper {
     @Bean
     public ModelMapper modelMapper() {
         ModelMapper objMapper = new ModelMapper();
+        /*----------------------------
+         * Mappper para Asignatura
+         */
         //TypeMap<Asignatura, AsignaturaDTO> mapa = objMapper.emptyTypeMap(Asignatura.class, AsignaturaDTO.class);
-        
-        // mapa.addMappings(m -> m.skip(ClienteDTO::setSolicitudes)).implicitMappings();
-        //mapa.addMappings(m -> m.skip(ClienteDTO::setCreateAt)).implicitMappings();
+        //Para el punto I donde solicitan no mostrar los cursos
         //mapa.addMappings(m -> m.skip(AsignaturaDTO::setListaCursos)).implicitMappings();
         
         /*----------------------------
          * Mappper para quitar el tipo de docente punto H
          */
-        TypeMap<Docente, DocenteDTO> mapa = objMapper.emptyTypeMap(Docente.class, DocenteDTO.class);
-        mapa.addMappings(m -> m.skip(DocenteDTO::setTipoDocente)).implicitMappings();
+        //TypeMap<Docente, DocenteDTO> mapa = objMapper.emptyTypeMap(Docente.class, DocenteDTO.class);
+        //mapa.addMappings(m -> m.skip(DocenteDTO::setTipoDocente)).implicitMappings();
 
 
         /*-------------------------------- 

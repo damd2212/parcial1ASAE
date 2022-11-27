@@ -3,6 +3,8 @@ package co.edu.unicauca.asae.parcial1.controllers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -27,4 +29,14 @@ public class EstudianteRestController {
         objEstudainte = estudianteService.findById(id);
         return objEstudainte;
     }
+
+    @PutMapping("/estudiantes/{id}")
+	public EstudianteDTO update(@RequestBody EstudianteDTO estudiante, @PathVariable Integer id) {
+		EstudianteDTO objEstudiante = null;
+		EstudianteDTO estudianteActual = estudianteService.findById(id);
+		if (estudianteActual != null) {
+			objEstudiante = estudianteService.update(id, estudiante);
+		}
+		return objEstudiante;
+	}
 }
