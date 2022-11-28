@@ -28,6 +28,6 @@ public class Curso {
     private Integer periodo;
 
     @ManyToOne
-    @JoinColumn(name = "idAsignatura",nullable = false)
+    @JoinColumn(name = "idAsignatura",nullable = true)
     private Asignatura objAsignatura;
 }
