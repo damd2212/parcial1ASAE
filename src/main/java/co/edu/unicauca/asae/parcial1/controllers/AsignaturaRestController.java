@@ -50,6 +50,14 @@ public class AsignaturaRestController {
 		objAsignatura = asignaturaService.findById(id);
 		return objAsignatura;
 	}
+
+	@GetMapping("/asignaturash/{id}")
+	public AsignaturaDTO findByIdH(@PathVariable Integer id) {
+		AsignaturaDTO objAsignatura = null;
+		objAsignatura = asignaturaService.findByIdPH(id);
+		return objAsignatura;
+	}
+
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	@ExceptionHandler(ConstraintViolationException.class)
 	ResponseEntity<String> handleConstraintViolationException(ConstraintViolationException e) {

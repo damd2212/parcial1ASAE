@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -16,28 +17,25 @@ import co.edu.unicauca.asae.parcial1.services.DTO.EstudianteDTO;
 import co.edu.unicauca.asae.parcial1.services.DTO.TelefonoDTO;
 
 @Service
-public class EstudianteServiceImpl implements IEstudianteService{
-
+public class EstudianteServiceImpl implements IEstudianteService {
 
     @Autowired
     private EstudianteRepository servicioAccesoBDestudiante;
 
     @Autowired
-    private ModelMapper estudainteModelMapper;
+    @Qualifier("mapperpuntog")
+    private ModelMapper estudianteModelMapper;
 
     @Override
     public EstudianteDTO findById(Integer idEstudainte) {
 
-        Optional<Estudiante> optional = this.servicioAccesoBDestudiante.findById(idEstudainte); 
-        if (optional.isPresent()) {
-            Estudiante estudiante = optional.get();
-            System.out.println("Antes de consultar los datos");
-            EstudianteDTO estudianteDTO = this.estudainteModelMapper.map(estudiante,EstudianteDTO.class);
-            return estudianteDTO;
-        }else{
-            System.out.println("Estudiante no encontrado");
-        }
-        return null;
+        Optional<Estudiante> optional = this.servicioAccesoBDestudiante.findById(idEstudainte);
+
+        Estudiante estudiante = optional.get();
+        System.out.println("Antes de consultar los datos");
+        EstudianteDTO estudianteDTO = this.estudianteModelMapper.map(estudiante, EstudianteDTO.class);
+        return estudianteDTO;
+
     }
 
     @Override
@@ -45,8 +43,8 @@ public class EstudianteServiceImpl implements IEstudianteService{
     public EstudianteDTO update(Integer id, EstudianteDTO estudiante) {
         Optional<Estudiante> optional = this.servicioAccesoBDestudiante.findById(id);
         EstudianteDTO estudianteDTOActualizado = null;
-        
-        if(optional.isPresent()){
+
+        if (optional.isPresent()) {
             Estudiante objEstudianteAlmacenado = optional.get();
             objEstudianteAlmacenado.setIdPersona(estudiante.getIdPersona());
             objEstudianteAlmacenado.setNombres(estudiante.getNombres());
@@ -69,10 +67,10 @@ public class EstudianteServiceImpl implements IEstudianteService{
                 index++;
             }
             Estudiante estudianteActualizado = this.servicioAccesoBDestudiante.save(objEstudianteAlmacenado);
-            estudianteDTOActualizado= this.estudainteModelMapper.map(estudianteActualizado,EstudianteDTO.class);
+            estudianteDTOActualizado = this.estudianteModelMapper.map(estudianteActualizado, EstudianteDTO.class);
         }
 
         return estudianteDTOActualizado;
     }
-    
+
 }
