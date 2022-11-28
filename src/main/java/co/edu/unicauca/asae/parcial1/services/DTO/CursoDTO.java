@@ -12,8 +12,6 @@ import lombok.Setter;
 @AllArgsConstructor @NoArgsConstructor
 public class CursoDTO {
     private String idCurso;
-    @NotBlank(message = "{curso.nombre.empty}")
     private String nombre;
-    @Positive(message = "{curso.periodo.negative}")
     private Integer periodo;
 }
