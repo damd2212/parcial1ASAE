@@ -26,6 +26,10 @@ public class EstudianteServiceImpl implements IEstudianteService {
     @Qualifier("mapperpuntog")
     private ModelMapper estudianteModelMapper;
 
+    @Autowired
+    @Qualifier("mapperbase")
+    private ModelMapper estudianteModelMapperpuntof;
+
     @Override
     public EstudianteDTO findById(Integer idEstudainte) {
 
@@ -33,7 +37,7 @@ public class EstudianteServiceImpl implements IEstudianteService {
 
         Estudiante estudiante = optional.get();
         System.out.println("Antes de consultar los datos");
-        EstudianteDTO estudianteDTO = this.estudianteModelMapper.map(estudiante, EstudianteDTO.class);
+        EstudianteDTO estudianteDTO = this.estudianteModelMapperpuntof.map(estudiante, EstudianteDTO.class);
         return estudianteDTO;
 
     }
@@ -71,6 +75,16 @@ public class EstudianteServiceImpl implements IEstudianteService {
         }
 
         return estudianteDTOActualizado;
+    }
+
+    @Override
+    public EstudianteDTO findByIdG(Integer idEstudainte) {
+        Optional<Estudiante> optional = this.servicioAccesoBDestudiante.findById(idEstudainte);
+
+        Estudiante estudiante = optional.get();
+        System.out.println("Antes de consultar los datos");
+        EstudianteDTO estudianteDTO = this.estudianteModelMapper.map(estudiante, EstudianteDTO.class);
+        return estudianteDTO;
     }
 
 }
