@@ -4,6 +4,7 @@ import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import co.edu.unicauca.asae.parcial1.models.Curso;
@@ -17,6 +18,7 @@ public class CursoServiceImpl implements ICursoService{
 	private CursoRepository servicioAccesoBaseDatos;
 
 	@Autowired
+	@Qualifier("mapperbase")
 	private ModelMapper modelMapper;
 
     /* 

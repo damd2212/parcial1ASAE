@@ -8,6 +8,7 @@ import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -17,6 +18,7 @@ public class DocenteServiceImpl implements IDocenteService{
 	private DocenteRepository servicioAccesoBaseDatos;
 
 	@Autowired
+	@Qualifier("mapperbase")
 	private ModelMapper modelMapper;
     
     @Override
