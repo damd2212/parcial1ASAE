@@ -29,12 +29,23 @@ public class EstudianteServiceImpl implements IEstudianteService {
     @Autowired
     @Qualifier("mapperbase")
     private ModelMapper estudianteModelMapperpuntof;
-
+    
+    @Override
+	public EstudianteDTO save(EstudianteDTO estudiante) {
+		Estudiante estudianteEntity = this.estudianteModelMapperpuntof.map(estudiante, Estudiante.class);
+		estudianteEntity.getListaTelefonos().forEach(telefono -> telefono.setObjEstudiante(estudianteEntity));
+		estudianteEntity.getObjDireccion().setObjEstudiante(estudianteEntity);
+		
+		Estudiante objEstudianteCreado = this.servicioAccesoBDestudiante.save(estudianteEntity);
+		EstudianteDTO estudianteDTO = this.estudianteModelMapperpuntof.map(objEstudianteCreado, EstudianteDTO.class);
+		return estudianteDTO;
+	}
+    
     @Override
     public EstudianteDTO findById(Integer idEstudainte) {
 
         Optional<Estudiante> optional = this.servicioAccesoBDestudiante.findById(idEstudainte);
-
+        
         Estudiante estudiante = optional.get();
         System.out.println("Antes de consultar los datos");
         EstudianteDTO estudianteDTO = this.estudianteModelMapperpuntof.map(estudiante, EstudianteDTO.class);
@@ -85,6 +96,19 @@ public class EstudianteServiceImpl implements IEstudianteService {
         System.out.println("Antes de consultar los datos");
         EstudianteDTO estudianteDTO = this.estudianteModelMapper.map(estudiante, EstudianteDTO.class);
         return estudianteDTO;
+    }
+    
+    @Override
+    @Transactional(readOnly = false)
+    public Boolean delete(Integer id) {
+    	boolean bandera = false;
+		Optional<Estudiante> optional = this.servicioAccesoBDestudiante.findById(id);
+		Estudiante objEstudiante = optional.get();
+		if (objEstudiante != null) {
+			this.servicioAccesoBDestudiante.delete(objEstudiante);
+			bandera = true;
+		}
+		return bandera;
     }
 
 }
