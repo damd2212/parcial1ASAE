@@ -1,7 +1,5 @@
 package co.edu.unicauca.asae.parcial1.services.DTO;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Positive;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;

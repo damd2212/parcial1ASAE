@@ -2,7 +2,6 @@ package co.edu.unicauca.asae.parcial1.services.DTO;
 
 import java.util.List;
 
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
 import lombok.AllArgsConstructor;
@@ -18,7 +17,6 @@ public class AsignaturaDTO {
     private Integer idAsignatura;
     //Peguntar las restrucciones par el nombre, min y max de caracteres
 
-    @NotBlank(message = "{asignatura.nombre.empty}")
     private String nombre;
     @Size(min = 2,message = "{asignatura.listaDocentes.size}")
     private List<DocenteDTO> listaDocentes;

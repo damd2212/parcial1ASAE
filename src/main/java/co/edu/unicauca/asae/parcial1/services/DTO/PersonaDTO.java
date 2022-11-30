@@ -11,12 +11,8 @@ import lombok.Setter;
 @NoArgsConstructor @AllArgsConstructor
 public class PersonaDTO {
     private Integer idPersona;
-    @NotBlank(message = "{persona.noIdentificacion.empty}")
     private String noIdentificacion;
-    @NotBlank(message = "{persona.tipoIdentificacion.empty}")
     private String tipoIdentificacion;
-    @NotBlank(message = "{persona.nombres.empty}")
     private String nombres;
-    @NotBlank(message = "{persona.apelidos.empty}")
     private String apellidos;
 }
