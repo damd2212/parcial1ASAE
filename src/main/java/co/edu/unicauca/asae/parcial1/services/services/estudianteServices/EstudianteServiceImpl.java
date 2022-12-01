@@ -82,7 +82,7 @@ public class EstudianteServiceImpl implements IEstudianteService {
                 index++;
             }
             Estudiante estudianteActualizado = this.servicioAccesoBDestudiante.save(objEstudianteAlmacenado);
-            estudianteDTOActualizado = this.estudianteModelMapper.map(estudianteActualizado, EstudianteDTO.class);
+            estudianteDTOActualizado = this.estudianteModelMapperpuntof.map(estudianteActualizado, EstudianteDTO.class);
         }
 
         return estudianteDTOActualizado;
