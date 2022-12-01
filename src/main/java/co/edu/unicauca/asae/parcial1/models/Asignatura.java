@@ -13,6 +13,9 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 import javax.persistence.JoinColumn;
 
 import lombok.AllArgsConstructor;
@@ -33,6 +36,7 @@ public class Asignatura {
     private String nombre;
 
     //Preguntar si el fetch es EAGER o no
+    @JsonBackReference
     @ManyToMany(cascade = {CascadeType.PERSIST},fetch = FetchType.LAZY)
     @JoinTable(name = "Docentes_Asignaturas",
                joinColumns = @JoinColumn(name = "idAsignatura"),

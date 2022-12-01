@@ -60,29 +60,25 @@ public class AsignaturaServiceImpl implements IAsignturaService {
     @Transactional()
     public AsignaturaDTO save(AsignaturaDTO prmAsignatura) {
         Asignatura objAsignatura = this.modelMapperB.map(prmAsignatura, Asignatura.class);
-        List<Curso> newCursos=new ArrayList<>();
-        for (Curso objCurso : objAsignatura.getListaCursos()) {
-            if(objCurso.getIdCurso()!=null){
-                Optional<Curso> obj=this.servicioADCurso.findById(objCurso.getIdCurso());
+        for (int i=0;i<objAsignatura.getListaCursos().size();i++) {
+            if(objAsignatura.getListaCursos().get(i).getIdCurso()!=null){
+                Optional<Curso> obj=this.servicioADCurso.findById(objAsignatura.getListaCursos().get(i).getIdCurso());
                 if(obj.isPresent()){
                     Curso curso=obj.get();
                     curso.setObjAsignatura(objAsignatura);
-                    newCursos.add(curso);
+                    objAsignatura.getListaCursos().remove(i);
+                    objAsignatura.getListaCursos().add(curso);
                 }else{
-                    objCurso.setObjAsignatura(objAsignatura);
-                    newCursos.add(objCurso);
+                    objAsignatura.getListaCursos().get(i).setObjAsignatura(objAsignatura);
                 }
             }else{
-                objCurso.setObjAsignatura(objAsignatura);
-                newCursos.add(objCurso);
+                objAsignatura.getListaCursos().get(i).setObjAsignatura(objAsignatura);
             }
             
         }
-        objAsignatura.setListaCursos(newCursos);
-        List<Docente> newDocentes=new ArrayList<>();
-        for(Docente objDocente : objAsignatura.getListaDocentes()){
-            if(objDocente.getIdPersona()!=null){
-                Optional<Docente> obj = this.servicioADDocente.findById(objDocente.getIdPersona());
+        for(int i=0;i<objAsignatura.getListaDocentes().size();i++){
+            if(objAsignatura.getListaDocentes().get(i).getIdPersona()!=0){
+                Optional<Docente> obj = this.servicioADDocente.findById(objAsignatura.getListaDocentes().get(i).getIdPersona());
                 if(obj.isPresent()){
                     Docente docente=obj.get();
                     if(docente.getListaAsignaturas()!=null){
@@ -90,19 +86,18 @@ public class AsignaturaServiceImpl implements IAsignturaService {
                     }else{
                         docente.setListaAsignaturas(new ArrayList<>(Arrays.asList(objAsignatura)));
                     }
-                    newDocentes.add(docente);
+                    objAsignatura.getListaDocentes().remove(i);
+                    objAsignatura.getListaDocentes().add(i, docente);
                 }else{
-                    objDocente.setListaAsignaturas(new ArrayList<>(Arrays.asList(objAsignatura)));
-                    newDocentes.add(objDocente);
+                    objAsignatura.getListaDocentes().get(i).setListaAsignaturas(new ArrayList<>(Arrays.asList(objAsignatura)));
                 }
             }else{
-                objDocente.setListaAsignaturas(new ArrayList<>(Arrays.asList(objAsignatura)));
-                newDocentes.add(objDocente);
+                objAsignatura.getListaDocentes().get(i).setListaAsignaturas(new ArrayList<>(Arrays.asList(objAsignatura)));
             }
             
         }
-        objAsignatura.setListaDocentes(newDocentes);
         Asignatura objAsignaturaRta = this.servicioAccesoBaseDatos.save(objAsignatura);
+        
         AsignaturaDTO objAsignaturaDTO = this.modelMapperB.map(objAsignaturaRta, AsignaturaDTO.class);
         return objAsignaturaDTO;
     }

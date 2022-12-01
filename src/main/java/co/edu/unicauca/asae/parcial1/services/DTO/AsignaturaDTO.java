@@ -4,6 +4,9 @@ import java.util.List;
 
 import javax.validation.constraints.Size;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,6 +22,7 @@ public class AsignaturaDTO {
 
     private String nombre;
     @Size(min = 2,message = "{asignatura.listaDocentes.size}")
+    @JsonBackReference
     private List<DocenteDTO> listaDocentes;
     @Size(min=1,message = "{asignatura.listaCursos.size}")
     private List<CursoDTO> listaCursos;

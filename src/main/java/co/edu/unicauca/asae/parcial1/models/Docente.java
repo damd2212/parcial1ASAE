@@ -26,7 +26,7 @@ public class Docente extends Persona{
     @Column(nullable = false)
     private float salario;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.LAZY)
     @JoinTable(name = "Docentes_Asignaturas",
                joinColumns = @JoinColumn(name = "idDocente"),
                inverseJoinColumns = @JoinColumn(name = "idAsignatura")

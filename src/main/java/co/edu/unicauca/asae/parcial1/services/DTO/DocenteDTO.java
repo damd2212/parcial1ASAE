@@ -2,6 +2,7 @@ package co.edu.unicauca.asae.parcial1.services.DTO;
 
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -13,7 +14,8 @@ public class DocenteDTO extends PersonaDTO {
     private String tipoDocente;
     private float salario;
 
-    private List<AsignaturaDTO> listaAsignatura;
+    
+    private List<AsignaturaDTO> listaAsignaturas;
 
 
     public DocenteDTO(){
@@ -25,6 +27,6 @@ public class DocenteDTO extends PersonaDTO {
         this.universidad = universidad;
         this.tipoDocente = tipoDocente;
         this.salario = salario;
-        this.listaAsignatura = listaAsignaturas;
+        this.listaAsignaturas = listaAsignaturas;
     }
 }

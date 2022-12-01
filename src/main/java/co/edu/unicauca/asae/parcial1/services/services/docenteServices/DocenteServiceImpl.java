@@ -4,11 +4,13 @@ import co.edu.unicauca.asae.parcial1.models.Docente;
 import co.edu.unicauca.asae.parcial1.repositories.DocenteRepository;
 import co.edu.unicauca.asae.parcial1.services.DTO.DocenteDTO;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -40,6 +42,13 @@ public class DocenteServiceImpl implements IDocenteService{
             objDocenteDTO=this.modelMapper.map(objDocente.get(),DocenteDTO.class);
         }
         return objDocenteDTO;
+    }
+    @Override
+    @Transactional
+    public List<DocenteDTO> findAll(){
+        Iterable<Docente> obj=this.servicioAccesoBaseDatos.findAll();
+        List<DocenteDTO> rta=this.modelMapper.map(obj, new TypeToken<List<DocenteDTO>>(){}.getType());
+        return rta;
     }
 
 }
