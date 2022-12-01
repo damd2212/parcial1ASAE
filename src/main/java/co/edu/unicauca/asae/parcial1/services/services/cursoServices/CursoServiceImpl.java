@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import co.edu.unicauca.asae.parcial1.models.Asignatura;
 import co.edu.unicauca.asae.parcial1.models.Curso;
+import co.edu.unicauca.asae.parcial1.repositories.AsignaturaRepository;
 import co.edu.unicauca.asae.parcial1.repositories.CursoRepository;
 import co.edu.unicauca.asae.parcial1.services.DTO.CursoDTO;
 
@@ -19,6 +21,9 @@ public class CursoServiceImpl implements ICursoService{
     @Autowired
 	private CursoRepository servicioAccesoBaseDatos;
 
+    @Autowired
+    private AsignaturaRepository servicioAccesoBaseDatosAsig;
+    
 	@Autowired
 	@Qualifier("mapperbase")
 	private ModelMapper modelMapper;
@@ -30,12 +35,20 @@ public class CursoServiceImpl implements ICursoService{
      */
     @Override
     @Transactional()
-    public CursoDTO save(CursoDTO prmCurso) {
-        Curso objCurso=this.modelMapper.map(prmCurso, Curso.class);
-        Curso objCursoRespuesta=this.servicioAccesoBaseDatos.save(objCurso);
-        CursoDTO objCursoDTO=this.modelMapper.map(objCursoRespuesta, CursoDTO.class);
+    public CursoDTO save(CursoDTO prmCurso, int id_asignatura) {
+        CursoDTO objCursoDTO = null;
+        Optional<Asignatura> optional = this.servicioAccesoBaseDatosAsig.findById(id_asignatura);
+        if(optional.isPresent()){
+            Curso objCurso =this.modelMapper.map(prmCurso, Curso.class);
+            Asignatura asignatura = optional.get();
+            objCurso.setObjAsignatura(asignatura);
+            Curso objCursoRespuesta=this.servicioAccesoBaseDatos.save(objCurso);
+            objCursoDTO=this.modelMapper.map(objCursoRespuesta, CursoDTO.class);
+        }
         return objCursoDTO;
     }
+
+
     @Override
     @Transactional
     public CursoDTO findById(String prmId){
