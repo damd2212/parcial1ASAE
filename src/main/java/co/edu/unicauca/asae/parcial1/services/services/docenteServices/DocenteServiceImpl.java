@@ -4,6 +4,8 @@ import co.edu.unicauca.asae.parcial1.models.Docente;
 import co.edu.unicauca.asae.parcial1.repositories.DocenteRepository;
 import co.edu.unicauca.asae.parcial1.services.DTO.DocenteDTO;
 
+import java.util.Optional;
+
 import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
@@ -27,6 +29,16 @@ public class DocenteServiceImpl implements IDocenteService{
         Docente objDocente=this.modelMapper.map(prmDocente, Docente.class);
         Docente objDocenteRespuesta=this.servicioAccesoBaseDatos.save(objDocente);
         DocenteDTO objDocenteDTO=this.modelMapper.map(objDocenteRespuesta, DocenteDTO.class);
+        return objDocenteDTO;
+    }
+    @Override
+    @Transactional
+    public DocenteDTO findById(int prmId){
+        Optional<Docente> objDocente=this.servicioAccesoBaseDatos.findById(prmId);
+        DocenteDTO objDocenteDTO=null;
+        if(objDocente.isPresent()){
+            objDocenteDTO=this.modelMapper.map(objDocente.get(),DocenteDTO.class);
+        }
         return objDocenteDTO;
     }
 

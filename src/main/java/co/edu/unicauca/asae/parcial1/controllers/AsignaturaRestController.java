@@ -38,11 +38,7 @@ public class AsignaturaRestController {
 
 	@PostMapping("/asignaturas")
 	public AsignaturaDTO create(@Valid @RequestBody AsignaturaDTO prmAsignatura) {
-		//Se debe hacer la validación con el try catch para atrapar otro tipo de errores entre las capas?
-		//Como se deben asosiar obligatoriamente un curso y dos profesores se debe recibir el id de ellos o los objetos completos?
-		//Siempre una asignatura tendrá un solo curso y dos profesoes o puede tener más? en el registro de ser solo y solo un curso y dos docentes?
-		//PREGUNTÁR POR QUÉ LAS VALIDACIONES DE LOS OBJETOS INTERNOS NO SE APLICAN
-
+		
 		AsignaturaDTO objAsignatura = null;
 		objAsignatura = asignaturaService.save(prmAsignatura);
 		return objAsignatura;

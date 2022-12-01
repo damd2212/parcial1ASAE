@@ -1,5 +1,7 @@
 package co.edu.unicauca.asae.parcial1.services.services.cursoServices;
 
+import java.util.Optional;
+
 import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
@@ -32,6 +34,16 @@ public class CursoServiceImpl implements ICursoService{
         Curso objCurso=this.modelMapper.map(prmCurso, Curso.class);
         Curso objCursoRespuesta=this.servicioAccesoBaseDatos.save(objCurso);
         CursoDTO objCursoDTO=this.modelMapper.map(objCursoRespuesta, CursoDTO.class);
+        return objCursoDTO;
+    }
+    @Override
+    @Transactional
+    public CursoDTO findById(String prmId){
+        Optional<Curso> objCurso=this.servicioAccesoBaseDatos.findById(prmId);
+        CursoDTO objCursoDTO=null;
+        if(objCurso.isPresent()){
+            objCursoDTO=this.modelMapper.map(objCurso.get(),CursoDTO.class);
+        }
         return objCursoDTO;
     }
 }
