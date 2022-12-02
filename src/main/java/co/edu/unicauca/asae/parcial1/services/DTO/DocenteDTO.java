@@ -14,7 +14,7 @@ public class DocenteDTO extends PersonaDTO {
     private String tipoDocente;
     private float salario;
 
-    
+    @JsonBackReference
     private List<AsignaturaDTO> listaAsignaturas;
 
 

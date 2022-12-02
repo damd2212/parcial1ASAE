@@ -22,7 +22,7 @@ public class AsignaturaDTO {
 
     private String nombre;
     @Size(min = 2,message = "{asignatura.listaDocentes.size}")
-    @JsonBackReference
+    
     private List<DocenteDTO> listaDocentes;
     @Size(min=1,message = "{asignatura.listaCursos.size}")
     private List<CursoDTO> listaCursos;
