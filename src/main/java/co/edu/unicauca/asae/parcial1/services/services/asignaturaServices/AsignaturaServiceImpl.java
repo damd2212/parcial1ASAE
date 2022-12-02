@@ -7,6 +7,7 @@ import java.util.Optional;
 import java.util.function.ObjDoubleConsumer;
 
 import javax.print.Doc;
+import javax.validation.constraints.Null;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,7 +78,7 @@ public class AsignaturaServiceImpl implements IAsignturaService {
             
         }
         for(int i=0;i<objAsignatura.getListaDocentes().size();i++){
-            if(objAsignatura.getListaDocentes().get(i).getIdPersona()!=0){
+            if(objAsignatura.getListaDocentes().get(i).getIdPersona()!=null){
                 Optional<Docente> obj = this.servicioADDocente.findById(objAsignatura.getListaDocentes().get(i).getIdPersona());
                 if(obj.isPresent()){
                     Docente docente=obj.get();
@@ -91,8 +92,6 @@ public class AsignaturaServiceImpl implements IAsignturaService {
                 }else{
                     objAsignatura.getListaDocentes().get(i).setListaAsignaturas(new ArrayList<>(Arrays.asList(objAsignatura)));
                 }
-            }else{
-                objAsignatura.getListaDocentes().get(i).setListaAsignaturas(new ArrayList<>(Arrays.asList(objAsignatura)));
             }
             
         }
