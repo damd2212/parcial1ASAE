@@ -37,12 +37,12 @@ public class Docente extends Persona{
         super();
     }
     
-    public Docente(Integer idPersona, String noIdentificacion, String tipoIdentificacion,String nombres, String apellidos, String universidad, String tipoDocente, float salario, List<Asignatura> listAsignatura){
+    public Docente(Integer idPersona, String noIdentificacion, String tipoIdentificacion,String nombres, String apellidos, String universidad, String tipoDocente, float salario, List<Asignatura> listAsignaturas){
         super(idPersona,noIdentificacion,tipoIdentificacion,nombres,apellidos);
         this.universidad = universidad;
         this.tipoDocente = tipoDocente;
         this.salario = salario;
-        this.listaAsignaturas = listAsignatura;
+        this.listaAsignaturas = listAsignaturas;
     }
 
 }

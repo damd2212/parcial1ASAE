@@ -77,20 +77,13 @@ public class AsignaturaServiceImpl implements IAsignturaService {
             }
             
         }
-        for(int i=0;i<objAsignatura.getListaDocentes().size();i++){
+         for(int i=0;i<objAsignatura.getListaDocentes().size();i++){
             if(objAsignatura.getListaDocentes().get(i).getIdPersona()!=null){
                 Optional<Docente> obj = this.servicioADDocente.findById(objAsignatura.getListaDocentes().get(i).getIdPersona());
                 if(obj.isPresent()){
                     Docente docente=obj.get();
-                    if(docente.getListaAsignaturas()!=null){
-                        docente.getListaAsignaturas().add(objAsignatura);
-                    }else{
-                        docente.setListaAsignaturas(new ArrayList<>(Arrays.asList(objAsignatura)));
-                    }
                     objAsignatura.getListaDocentes().remove(i);
-                    objAsignatura.getListaDocentes().add(i, docente);
-                }else{
-                    objAsignatura.getListaDocentes().get(i).setListaAsignaturas(new ArrayList<>(Arrays.asList(objAsignatura)));
+                    objAsignatura.getListaDocentes().add(i, docente);        
                 }
             }
             
