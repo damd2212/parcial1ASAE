@@ -38,12 +38,15 @@ public class CursoServiceImpl implements ICursoService{
     public CursoDTO save(CursoDTO prmCurso, int id_asignatura) {
         CursoDTO objCursoDTO = null;
         Optional<Asignatura> optional = this.servicioAccesoBaseDatosAsig.findById(id_asignatura);
-        if(optional.isPresent()){
+        Optional<Curso> optional2 = this.servicioAccesoBaseDatos.findById(prmCurso.getIdCurso());
+        if(optional.isPresent() && !optional2.isPresent()){
             Curso objCurso =this.modelMapper.map(prmCurso, Curso.class);
             Asignatura asignatura = optional.get();
             objCurso.setObjAsignatura(asignatura);
             Curso objCursoRespuesta=this.servicioAccesoBaseDatos.save(objCurso);
             objCursoDTO=this.modelMapper.map(objCursoRespuesta, CursoDTO.class);
+        }else{
+            System.out.println("Error al almacenar el curso");
         }
         return objCursoDTO;
     }
