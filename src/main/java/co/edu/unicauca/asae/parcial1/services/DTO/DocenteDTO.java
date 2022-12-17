@@ -2,6 +2,8 @@ package co.edu.unicauca.asae.parcial1.services.DTO;
 
 import java.util.List;
 
+import javax.validation.constraints.Positive;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 import lombok.Getter;
@@ -12,6 +14,8 @@ public class DocenteDTO extends PersonaDTO {
     
     private String universidad;
     private String tipoDocente;
+
+    @Positive(message = "{docente.salario.positive}")
     private float salario;
 
     @JsonBackReference
