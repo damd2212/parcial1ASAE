@@ -37,11 +37,10 @@ public class AsignaturaRestController {
 	private IAsignturaService asignaturaService;
 
 	@PostMapping("/asignaturas")
-	public AsignaturaDTO create(@Valid @RequestBody AsignaturaDTO prmAsignatura) {
-		
+	public ResponseEntity<?> create(@Valid @RequestBody AsignaturaDTO prmAsignatura) {		
 		AsignaturaDTO objAsignatura = null;
 		objAsignatura = asignaturaService.save(prmAsignatura);
-		return objAsignatura;
+		return new ResponseEntity<AsignaturaDTO>(objAsignatura, HttpStatus.CREATED);
 	}
 
     @GetMapping("/asignaturas/{id}")

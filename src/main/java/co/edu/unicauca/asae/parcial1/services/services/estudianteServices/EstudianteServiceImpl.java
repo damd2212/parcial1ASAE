@@ -29,23 +29,23 @@ public class EstudianteServiceImpl implements IEstudianteService {
     @Autowired
     @Qualifier("mapperbase")
     private ModelMapper estudianteModelMapperpuntof;
-    
+
     @Override
-	public EstudianteDTO save(EstudianteDTO estudiante) {
-		Estudiante estudianteEntity = this.estudianteModelMapperpuntof.map(estudiante, Estudiante.class);
-		estudianteEntity.getListaTelefonos().forEach(telefono -> telefono.setObjEstudiante(estudianteEntity));
-		estudianteEntity.getObjDireccion().setObjEstudiante(estudianteEntity);
-		
-		Estudiante objEstudianteCreado = this.servicioAccesoBDestudiante.save(estudianteEntity);
-		EstudianteDTO estudianteDTO = this.estudianteModelMapperpuntof.map(objEstudianteCreado, EstudianteDTO.class);
-		return estudianteDTO;
-	}
-    
+    public EstudianteDTO save(EstudianteDTO estudiante) {
+        Estudiante estudianteEntity = this.estudianteModelMapperpuntof.map(estudiante, Estudiante.class);
+        estudianteEntity.getListaTelefonos().forEach(telefono -> telefono.setObjEstudiante(estudianteEntity));
+        estudianteEntity.getObjDireccion().setObjEstudiante(estudianteEntity);
+
+        Estudiante objEstudianteCreado = this.servicioAccesoBDestudiante.save(estudianteEntity);
+        EstudianteDTO estudianteDTO = this.estudianteModelMapperpuntof.map(objEstudianteCreado, EstudianteDTO.class);
+        return estudianteDTO;
+    }
+
     @Override
     public EstudianteDTO findById(Integer idEstudainte) {
 
         Optional<Estudiante> optional = this.servicioAccesoBDestudiante.findById(idEstudainte);
-        
+
         Estudiante estudiante = optional.get();
         System.out.println("Antes de consultar los datos");
         EstudianteDTO estudianteDTO = this.estudianteModelMapperpuntof.map(estudiante, EstudianteDTO.class);
@@ -76,16 +76,29 @@ public class EstudianteServiceImpl implements IEstudianteService {
             List<Telefono> listaTelefonosAlmacenados = objEstudianteAlmacenado.getListaTelefonos();
             Integer index = 0;
             for (TelefonoDTO telefono : listaTelefonosNuevos) {
-                listaTelefonosAlmacenados.get(index).setIdTelefono(telefono.getIdTelefono());
-                listaTelefonosAlmacenados.get(index).setNumero(telefono.getNumero());
-                listaTelefonosAlmacenados.get(index).setTipo(telefono.getTipo());
-                index++;
+                index = existe(listaTelefonosAlmacenados, telefono.getIdTelefono());
+                if (index!=-1) {
+                    listaTelefonosAlmacenados.get(index).setIdTelefono(telefono.getIdTelefono());
+                    listaTelefonosAlmacenados.get(index).setNumero(telefono.getNumero());
+                    listaTelefonosAlmacenados.get(index).setTipo(telefono.getTipo());
+                }
             }
             Estudiante estudianteActualizado = this.servicioAccesoBDestudiante.save(objEstudianteAlmacenado);
             estudianteDTOActualizado = this.estudianteModelMapperpuntof.map(estudianteActualizado, EstudianteDTO.class);
         }
 
         return estudianteDTOActualizado;
+    }
+
+    private Integer existe(List<Telefono> listTelefonosAlmacenados, Integer idTelefonoActualizado){
+        Integer index = 0;
+        for (Telefono telefono : listTelefonosAlmacenados) {
+            if(telefono.getIdTelefono()==idTelefonoActualizado){
+                return index;
+            }
+            index++;
+        }
+        return -1;
     }
 
     @Override
@@ -97,18 +110,18 @@ public class EstudianteServiceImpl implements IEstudianteService {
         EstudianteDTO estudianteDTO = this.estudianteModelMapper.map(estudiante, EstudianteDTO.class);
         return estudianteDTO;
     }
-    
+
     @Override
     @Transactional(readOnly = false)
     public Boolean delete(Integer id) {
-    	boolean bandera = false;
-		Optional<Estudiante> optional = this.servicioAccesoBDestudiante.findById(id);
-		Estudiante objEstudiante = optional.get();
-		if (objEstudiante != null) {
-			this.servicioAccesoBDestudiante.delete(objEstudiante);
-			bandera = true;
-		}
-		return bandera;
+        boolean bandera = false;
+        Optional<Estudiante> optional = this.servicioAccesoBDestudiante.findById(id);
+        Estudiante objEstudiante = optional.get();
+        if (objEstudiante != null) {
+            this.servicioAccesoBDestudiante.delete(objEstudiante);
+            bandera = true;
+        }
+        return bandera;
     }
 
 }
