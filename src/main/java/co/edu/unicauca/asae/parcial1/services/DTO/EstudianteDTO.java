@@ -9,9 +9,11 @@ import lombok.Setter;
 @Getter @Setter
 public class EstudianteDTO extends PersonaDTO{
     private Date fechaIngreso;
-
+    private String correoElectronico;
+    
     private DireccionDTO objDireccion;
     private List<TelefonoDTO> listaTelefonos;
+    
 
     public EstudianteDTO(){
         super();

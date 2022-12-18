@@ -5,6 +5,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -129,6 +130,20 @@ public class EstudianteServiceImpl implements IEstudianteService {
             }
         }
         return bandera;
+    }
+
+    @Override
+    public List<EstudianteDTO> buscarPorNombresApellidosEmail(String nombres, String apellidos, String correoElectronico) {
+        List<Estudiante> estudiantesEncontrados = this.servicioAccesoBDestudiante.findByNombresIgnoreCaseContainingOrApellidosIgnoreCaseContainingOrCorreoElectronicoIgnoreCaseContaining(nombres, apellidos, correoElectronico);
+        List<EstudianteDTO> estudiantesEncontradosDTO =this.estudianteModelMapper.map(estudiantesEncontrados, new TypeToken<List<EstudianteDTO>>(){}.getType());
+        return estudiantesEncontradosDTO;
+    }
+
+    @Override
+    public List<EstudianteDTO> findByIdPorRango(int id1, int id2) {
+        List<Estudiante> estudiantesEncontrados = this.servicioAccesoBDestudiante.findByIdPersonaBetween(id1, id2);
+        List<EstudianteDTO> estudiantesEncontradosDTO =this.estudianteModelMapper.map(estudiantesEncontrados, new TypeToken<List<EstudianteDTO>>(){}.getType());
+        return estudiantesEncontradosDTO;
     }
 
 }
