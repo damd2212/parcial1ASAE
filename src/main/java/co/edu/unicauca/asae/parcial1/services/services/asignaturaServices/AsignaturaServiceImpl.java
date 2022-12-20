@@ -10,6 +10,7 @@ import javax.print.Doc;
 import javax.validation.constraints.Null;
 
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -109,6 +110,20 @@ public class AsignaturaServiceImpl implements IAsignturaService {
         AsignaturaDTO asignaturaDTO = this.modelMapperH.map(asignatura, AsignaturaDTO.class);
         return asignaturaDTO;
 
+    }
+
+    @Override
+    @Transactional(readOnly = true)
+    public ResponseEntity<?> buscarPorNombre(String nombre) {
+        
+        List<Asignatura> asignaturas = this.servicioAccesoBaseDatos.findByNombreIgnoreCaseContainingOrderByNombreAsc(nombre);
+        if (!asignaturas.isEmpty()) {
+            List<AsignaturaDTO> asinaturasDTO = this.modelMapperB.map(asignaturas, new TypeToken<List<AsignaturaDTO>>() {}.getType());    
+            return new ResponseEntity<List<AsignaturaDTO>>(asinaturasDTO,HttpStatus.OK);
+
+        } 
+        return new ResponseEntity<String>("No se encontraron asignaturas con el nombre " + nombre, HttpStatus.NO_CONTENT);
+        
     }
 
 }

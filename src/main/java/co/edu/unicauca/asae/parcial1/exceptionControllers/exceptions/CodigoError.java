@@ -7,8 +7,13 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public enum CodigoError {
 
-    ENTIDAD_NO_ENCONTRADA("GC-0008", "Recurso no encontrado");
 
-    private final String codigo;
-    private final String llaveMensaje;
+        ERROR_GENERICO("GC-0001", "ERROR GENERICO"),
+        ENTIDAD_YA_EXISTE("GC-0002", "ERROR ENTIDAD YA EXISTE"),
+        ENTIDAD_NO_ENCONTRADA("GC-0008", "Recurso no encontrado"),
+        VIOLACION_REGLA_DE_NEGOCIO("GC-0004", "Regla de negocio violada");
+        
+        private final String codigo;
+        private final String llaveMensaje;
+
 }

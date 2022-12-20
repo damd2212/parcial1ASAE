@@ -19,9 +19,13 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
+
+
+import org.springframework.http.HttpStatus;
 
 import co.edu.unicauca.asae.parcial1.services.DTO.AsignaturaDTO;
 import co.edu.unicauca.asae.parcial1.services.services.asignaturaServices.IAsignturaService;
@@ -52,6 +56,12 @@ public class AsignaturaRestController {
 		AsignaturaDTO objAsignatura = null;
 		objAsignatura = asignaturaService.findByIdPH(id);
 		return objAsignatura;
+	}
+
+	@GetMapping("/asignaturas/nombre")
+	public ResponseEntity<?> buscarPorNombre(@Valid @RequestParam String nombre){
+		ResponseEntity<?> response = this.asignaturaService.buscarPorNombre(nombre);
+		return response;
 	}
 
 }

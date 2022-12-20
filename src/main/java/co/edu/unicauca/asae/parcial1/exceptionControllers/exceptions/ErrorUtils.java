@@ -2,6 +2,7 @@ package co.edu.unicauca.asae.parcial1.exceptionControllers.exceptions;
 
 public final class ErrorUtils {
 
+
     ErrorUtils() {
   
     }
@@ -22,3 +23,4 @@ public final class ErrorUtils {
       return error;
     }
   }
+

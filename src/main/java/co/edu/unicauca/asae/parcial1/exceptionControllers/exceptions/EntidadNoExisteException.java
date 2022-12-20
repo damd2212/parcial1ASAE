@@ -4,6 +4,7 @@ import lombok.Getter;
 
 @Getter
 public class EntidadNoExisteException extends RuntimeException {
+
     private final String llaveMensaje;
     private final String codigo;
 
@@ -18,4 +19,5 @@ public class EntidadNoExisteException extends RuntimeException {
         this.llaveMensaje = CodigoError.ENTIDAD_NO_ENCONTRADA.getLlaveMensaje();
         this.codigo = CodigoError.ENTIDAD_NO_ENCONTRADA.getCodigo();
     }
+
 }

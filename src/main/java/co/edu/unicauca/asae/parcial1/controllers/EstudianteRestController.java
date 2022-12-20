@@ -9,13 +9,17 @@ import javax.validation.Valid;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.http.ResponseEntity;
+
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -73,6 +77,7 @@ public class EstudianteRestController {
         return response;        
     }
 
+
     @DeleteMapping("/estudiantes/{id}")
     public Boolean delete(@PathVariable Integer id) {
         Boolean bandera = false;
@@ -107,4 +112,12 @@ public class EstudianteRestController {
         ResponseEntity<List<EstudianteDTO>> response =  this.estudianteService.findByIdEnConjunto(conjuntoIds);
         return response;
     }
+
+
+    @PostMapping("/estudiantes/val")
+    public ResponseEntity<?> register(@Valid @RequestBody EstudianteDTO estudiante) {
+        ResponseEntity<?> objRespuesta = this.estudianteService.register(estudiante);
+    	return objRespuesta;
+    }
+
 }

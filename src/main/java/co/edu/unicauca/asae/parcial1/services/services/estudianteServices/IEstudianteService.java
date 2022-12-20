@@ -1,10 +1,12 @@
 package co.edu.unicauca.asae.parcial1.services.services.estudianteServices;
 
 
+
 import java.util.Collection;
 import java.util.List;
 
 import co.edu.unicauca.asae.parcial1.models.Estudiante;
+
 import org.springframework.http.ResponseEntity;
 
 import co.edu.unicauca.asae.parcial1.services.DTO.EstudianteDTO;
@@ -20,6 +22,10 @@ public interface IEstudianteService {
     public ResponseEntity<EstudianteDTO> update(Integer id, EstudianteDTO estudiante);
     
     public Boolean delete(Integer id);
+
+
+    public ResponseEntity<?> register(EstudianteDTO estudiante);
+
     
     public ResponseEntity<List<EstudianteDTO>> buscarPorNombresApellidosEmail(String nombres,String apellidos, String correoElectronico);
 
