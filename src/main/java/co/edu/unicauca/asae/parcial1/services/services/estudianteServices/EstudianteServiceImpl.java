@@ -197,6 +197,8 @@ public class EstudianteServiceImpl implements IEstudianteService {
         
         return new ResponseEntity<EstudianteDTO>(estudianteDTO, HttpStatus.CREATED);
 
+    }
+
     public ResponseEntity<List<EstudianteDTO>> buscarPorNombresApellidosEmail(String nombres, String apellidos, String correoElectronico) {
         List<Estudiante> estudiantesEncontrados = this.servicioAccesoBDestudiante.findByNombresIgnoreCaseContainingOrApellidosIgnoreCaseContainingOrCorreoElectronicoIgnoreCaseContaining(nombres, apellidos, correoElectronico);
         List<EstudianteDTO> estudiantesEncontradosDTO =this.estudianteModelMapper.map(estudiantesEncontrados, new TypeToken<List<EstudianteDTO>>(){}.getType());

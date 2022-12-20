@@ -23,7 +23,8 @@ public class EstudianteDTO extends PersonaDTO{
     @PastOrPresent(message = "{estudiante.date.past}")
     private Date fechaIngreso;
     
-    @Email(message = "estudiante.email.mask")
+    @NotNull(message = "{estudiante.email.empty}")
+    @Email(message = "{estudiante.email.mask}")
     private String correoElectronico;
 
 
