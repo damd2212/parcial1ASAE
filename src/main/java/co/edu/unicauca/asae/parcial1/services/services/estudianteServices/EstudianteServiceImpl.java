@@ -13,7 +13,7 @@ import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import co.edu.unicauca.asae.parcial1.exceptionControllers.exceptions.RecursoNoExisteException;
+import co.edu.unicauca.asae.parcial1.exceptionControllers.exceptions.EntidadNoExisteException;
 import co.edu.unicauca.asae.parcial1.models.Direccion;
 import co.edu.unicauca.asae.parcial1.models.Estudiante;
 import co.edu.unicauca.asae.parcial1.models.Telefono;
@@ -123,7 +123,7 @@ public class EstudianteServiceImpl implements IEstudianteService {
         boolean bandera = false;
         Optional<Estudiante> optional = this.servicioAccesoBDestudiante.findById(id);
         if (!optional.isPresent()) {
-            RecursoNoExisteException objException = new RecursoNoExisteException("El estudiante con id "+ id + " no existe en la base de datos");
+            EntidadNoExisteException objException = new EntidadNoExisteException("El estudiante con id "+ id + " no existe en la base de datos");
             throw objException;
         } else {
             Estudiante objEstudiante = optional.get();
