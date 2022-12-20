@@ -14,5 +14,6 @@ public class CursoDTO {
     private String idCurso;
     @Size(min=5,max = 25,message = "{curso.nombre.size}")
     private String nombre;
+    @Size(min=1,max= 2)
     private Integer periodo;
 }
