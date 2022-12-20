@@ -23,17 +23,21 @@ public class Estudiante extends Persona{
     @OneToMany(cascade = {CascadeType.PERSIST,CascadeType.REMOVE,CascadeType.REFRESH},fetch = FetchType.EAGER, mappedBy = "objEstudiante")
     private List<Telefono> listaTelefonos;
     ////Para el punto f es Eager
-	@OneToOne(optional = false, cascade = { CascadeType.PERSIST,CascadeType.REMOVE}, fetch = FetchType.EAGER, mappedBy = "objEstudiante")
+  
+	@OneToOne(cascade = { CascadeType.PERSIST,CascadeType.REMOVE,CascadeType.REFRESH}, fetch = FetchType.EAGER, mappedBy = "objEstudiante")
     private Direccion objDireccion;
-	
-	@Column(nullable = false)
-	private String correoElectronico;
-	
+
+
+    @Column(nullable = false)
+    private String correoElectronico;
+
     public Estudiante(){
         super();
     }
     
+
     public Estudiante(Integer idPersona, String noIdentificacion, String tipoIdentificacion,String nombres, String apellidos, Date fechaIngreso, List<Telefono> listaTelefonos, Direccion prmDireccion, String prmCorreoElectronico){
+
         super(idPersona,noIdentificacion,tipoIdentificacion,nombres,apellidos);
         this.fechaIngreso = fechaIngreso;
         this.listaTelefonos = listaTelefonos;

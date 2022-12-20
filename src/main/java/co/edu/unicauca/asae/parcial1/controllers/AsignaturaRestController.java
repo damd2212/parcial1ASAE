@@ -57,23 +57,4 @@ public class AsignaturaRestController {
 		return objAsignatura;
 	}
 
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	@ExceptionHandler(ConstraintViolationException.class)
-	ResponseEntity<String> handleConstraintViolationException(ConstraintViolationException e) {
-		return new ResponseEntity<>("nombre del método y parametros erroneos: " + e.getMessage(),
-				HttpStatus.BAD_REQUEST);
-	}
-
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {
-		Map<String, String> errors = new HashMap<>();
-		ex.getBindingResult().getAllErrors().forEach((error) -> {
-			String fieldName = ((FieldError) error).getField();
-			String errorMessage = error.getDefaultMessage();
-			errors.put(fieldName, errorMessage);
-		});
-
-		return errors;
-	}
 }

@@ -3,7 +3,9 @@ package co.edu.unicauca.asae.parcial1.controllers;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
-
+import java.util.Collection;
+import java.util.List;
+import javax.validation.Valid;
 import javax.validation.ConstraintViolationException;
 import javax.validation.Valid;
 
@@ -13,6 +15,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.FieldError;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.MethodArgumentNotValidException;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,10 +26,12 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.unicauca.asae.parcial1.services.DTO.EstudianteDTO;
 import co.edu.unicauca.asae.parcial1.services.services.estudianteServices.IEstudianteService;
+import org.springframework.http.HttpStatus;
 
 @RestController
 @RequestMapping("/api")
@@ -33,72 +39,93 @@ import co.edu.unicauca.asae.parcial1.services.services.estudianteServices.IEstud
 public class EstudianteRestController {
     @Autowired
     private IEstudianteService estudianteService;
-    
+
     @PostMapping("/estudiantes")
     public ResponseEntity<?> create(@Valid @RequestBody EstudianteDTO estudiante) {
-    	EstudianteDTO objEstudiante = null;
-    	objEstudiante = this.estudianteService.save(estudiante);
-    	return new ResponseEntity<EstudianteDTO>(objEstudiante,HttpStatus.CREATED);
+        EstudianteDTO objEstudiante = null;
+        objEstudiante = this.estudianteService.save(estudiante);
+        return new ResponseEntity<EstudianteDTO>(objEstudiante, HttpStatus.CREATED);
     }
-    
+
     @GetMapping("/estudiantes/{id}")
-    public EstudianteDTO findById(@PathVariable Integer id){
+    public EstudianteDTO findById(@PathVariable Integer id) {
         EstudianteDTO objEstudainte = null;
         objEstudainte = estudianteService.findById(id);
         return objEstudainte;
     }
 
     @GetMapping("/estudiantesg/{id}")
-    public EstudianteDTO findByIdG(@PathVariable Integer id){
+    public EstudianteDTO findByIdG(@PathVariable Integer id) {
         EstudianteDTO objEstudainte = null;
         objEstudainte = estudianteService.findByIdG(id);
         return objEstudainte;
     }
 
     @GetMapping("/estudiantesEager/{id}")
-    public EstudianteDTO findByIdEager(@PathVariable Integer id){
+    public EstudianteDTO findByIdEager(@PathVariable Integer id) {
         EstudianteDTO objEstudainte = null;
         objEstudainte = estudianteService.findById(id);
         return objEstudainte;
     }
 
     @PutMapping("/estudiantes/{id}")
-	public ResponseEntity<?> update(@Valid @RequestBody EstudianteDTO estudiante, @PathVariable Integer id) {
-		EstudianteDTO objEstudiante = null;
-		EstudianteDTO estudianteActual = estudianteService.findById(id);
-		if (estudianteActual != null) {
-			objEstudiante = estudianteService.update(id, estudiante);
-		}
-		return new ResponseEntity<EstudianteDTO>(objEstudiante,HttpStatus.OK);
-	}
-    
+    public ResponseEntity<?> update(@Valid @RequestBody EstudianteDTO estudiante, @PathVariable Integer id) {
+        EstudianteDTO objEstudiante = null;
+        EstudianteDTO estudianteActual = estudianteService.findById(id);
+        if (estudianteActual != null) {
+            objEstudiante = estudianteService.update(id, estudiante);
+        }else{
+            return new ResponseEntity<EstudianteDTO>(objEstudiante, HttpStatus.NOT_FOUND);
+        }
+        if(objEstudiante!=null){
+            return new ResponseEntity<EstudianteDTO>(objEstudiante, HttpStatus.OK);
+        }else{
+            return new ResponseEntity<EstudianteDTO>(objEstudiante, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        
+    }
+
     @DeleteMapping("/estudiantes/{id}")
     public Boolean delete(@PathVariable Integer id) {
-    	Boolean bandera = false;
-    	EstudianteDTO objEstudiante= this.estudianteService.findById(id);
-    	if(objEstudiante != null) {
-    		bandera = this.estudianteService.delete(id);
-    	}
-    	return bandera;
+        Boolean bandera = false;
+        bandera = this.estudianteService.delete(id); 
+        return bandera;
     }
-    
-    @ResponseStatus(HttpStatus.BAD_REQUEST)
-	@ExceptionHandler(ConstraintViolationException.class)
-	ResponseEntity<String> handleConstraintViolationException(ConstraintViolationException e) {
-		return new ResponseEntity<>("nombre del método y parametros erroneos: " + e.getMessage(),
-				HttpStatus.BAD_REQUEST);
-	}
+    @GetMapping("/estudiantes/exist")
+    public Boolean exist(@RequestParam String tipoIdentificacion, @RequestParam String noIdentificacion) {
+        Boolean bandera = false;
+        bandera = this.estudianteService.existeEstudianteConTipoYNumeroIdentificacion(tipoIdentificacion, noIdentificacion); 
+        return bandera;
+    }
 
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {
-		Map<String, String> errors = new HashMap<>();
-		ex.getBindingResult().getAllErrors().forEach((error) -> {
-			String fieldName = ((FieldError) error).getField();
-			String errorMessage = error.getDefaultMessage();
-			errors.put(fieldName, errorMessage);
-		});
+    @GetMapping("/estudiantes/nombres_apellidos_email")
+    public ResponseEntity<?> buscarPorNombresApellidosEmail(@RequestParam String nombres,
+            @RequestParam String apellidos, @RequestParam String correoElectronico) {
+        List<EstudianteDTO> lista = null;
+        if(nombres.length()==0){
+            nombres=" ";
+        }
+        if(apellidos.length()==0){
+            apellidos=" ";
+        }
+        if(correoElectronico.length()==0){
+            correoElectronico=" ";
+        }
+        lista = this.estudianteService.buscarPorNombresApellidosEmail(nombres, apellidos, correoElectronico);
+        if (lista.size() <= 0) {
+            return new ResponseEntity<List<EstudianteDTO>>(lista, HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<List<EstudianteDTO>>(lista, HttpStatus.OK);
+    }
 
-		return errors;
-	}
+    @GetMapping("/estudiantes")
+    public ResponseEntity<?> showRangoClientes(@RequestBody Collection<Integer> conjuntoIds) {
+        System.out.println(conjuntoIds);
+        List<EstudianteDTO> lista = null;
+        lista = this.estudianteService.findByIdEnConjunto(conjuntoIds);
+        if (lista.size() <= 0) {
+            return new ResponseEntity<List<EstudianteDTO>>(lista, HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<List<EstudianteDTO>>(lista, HttpStatus.OK);
+    }
 }

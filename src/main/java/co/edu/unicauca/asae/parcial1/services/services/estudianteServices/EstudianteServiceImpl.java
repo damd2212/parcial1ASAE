@@ -1,14 +1,21 @@
 package co.edu.unicauca.asae.parcial1.services.services.estudianteServices;
 
+import java.util.Collection;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import javax.validation.constraints.Null;
+
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import co.edu.unicauca.asae.parcial1.exceptionControllers.exceptions.EntidadNoExisteException;
 import co.edu.unicauca.asae.parcial1.models.Direccion;
 import co.edu.unicauca.asae.parcial1.models.Estudiante;
 import co.edu.unicauca.asae.parcial1.models.Telefono;
@@ -78,7 +85,7 @@ public class EstudianteServiceImpl implements IEstudianteService {
             Integer index = 0;
             for (TelefonoDTO telefono : listaTelefonosNuevos) {
                 index = existe(listaTelefonosAlmacenados, telefono.getIdTelefono());
-                if (index!=-1) {
+                if (index != -1) {
                     listaTelefonosAlmacenados.get(index).setIdTelefono(telefono.getIdTelefono());
                     listaTelefonosAlmacenados.get(index).setNumero(telefono.getNumero());
                     listaTelefonosAlmacenados.get(index).setTipo(telefono.getTipo());
@@ -91,10 +98,10 @@ public class EstudianteServiceImpl implements IEstudianteService {
         return estudianteDTOActualizado;
     }
 
-    private Integer existe(List<Telefono> listTelefonosAlmacenados, Integer idTelefonoActualizado){
+    private Integer existe(List<Telefono> listTelefonosAlmacenados, Integer idTelefonoActualizado) {
         Integer index = 0;
         for (Telefono telefono : listTelefonosAlmacenados) {
-            if(telefono.getIdTelefono()==idTelefonoActualizado){
+            if (telefono.getIdTelefono() == idTelefonoActualizado) {
                 return index;
             }
             index++;
@@ -117,12 +124,49 @@ public class EstudianteServiceImpl implements IEstudianteService {
     public Boolean delete(Integer id) {
         boolean bandera = false;
         Optional<Estudiante> optional = this.servicioAccesoBDestudiante.findById(id);
-        Estudiante objEstudiante = optional.get();
-        if (objEstudiante != null) {
-            this.servicioAccesoBDestudiante.delete(objEstudiante);
-            bandera = true;
+        if (!optional.isPresent()) {
+            EntidadNoExisteException objException = new EntidadNoExisteException("El estudiante con id "+ id + " no existe en la base de datos");
+            throw objException;
+        } else {
+            Estudiante objEstudiante = optional.get();
+            if (objEstudiante != null) {
+                this.servicioAccesoBDestudiante.delete(objEstudiante);
+                bandera = true;
+            }
         }
         return bandera;
+    }
+
+    @Override
+    public List<EstudianteDTO> buscarPorNombresApellidosEmail(String nombres, String apellidos, String correoElectronico) {
+        List<Estudiante> estudiantesEncontrados = this.servicioAccesoBDestudiante.findByNombresIgnoreCaseContainingOrApellidosIgnoreCaseContainingOrCorreoElectronicoIgnoreCaseContaining(nombres, apellidos, correoElectronico);
+        List<EstudianteDTO> estudiantesEncontradosDTO =this.estudianteModelMapper.map(estudiantesEncontrados, new TypeToken<List<EstudianteDTO>>(){}.getType());
+        return estudiantesEncontradosDTO;
+    }
+
+    @Override
+    public List<EstudianteDTO> findByIdEnConjunto(Collection<Integer> conjuntoIds) {
+        List<Estudiante> estudiantesEncontrados = this.servicioAccesoBDestudiante.findByIdPersonaIn(conjuntoIds);
+        List<EstudianteDTO> estudiantesEncontradosDTO =this.estudianteModelMapper.map(estudiantesEncontrados, new TypeToken<List<EstudianteDTO>>(){}.getType());
+        return estudiantesEncontradosDTO;
+    }
+
+    @Override
+    public boolean existeEstudianteConTipoYNumeroIdentificacion(String tipoIdentificacion, String noIdentificacion) {
+        boolean rta=false;
+        try{
+            Estudiante objEstudiante=this.servicioAccesoBDestudiante.findByTipoDeIdentificacionYnumeroDeIdentificacion(tipoIdentificacion, noIdentificacion);
+            System.out.println("Tipo= "+tipoIdentificacion+" No= "+noIdentificacion);
+            if(objEstudiante==null){
+                rta=false;
+            }else{
+                rta=true;
+            }
+            
+        }catch(Exception e){
+            return false;
+        }
+        return rta;
     }
 
 }
