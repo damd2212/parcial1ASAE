@@ -1,10 +1,7 @@
 package co.edu.unicauca.asae.parcial1.controllers;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -20,7 +17,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -37,9 +33,8 @@ public class DocenteRestController {
 
 	@PostMapping("/docentes")
 	public ResponseEntity<?> create(@Valid @RequestBody DocenteDTO prmDocente) {
-		DocenteDTO objDocente = null;
-		objDocente = docenteService.save(prmDocente);
-		return new ResponseEntity<DocenteDTO>(objDocente, HttpStatus.CREATED);
+		ResponseEntity<?> response = docenteService.save(prmDocente);
+		return response;
 	}
 
 	@GetMapping("/docentes/{id}")

@@ -24,7 +24,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 
+
 import org.springframework.http.HttpStatus;
+
 import co.edu.unicauca.asae.parcial1.services.DTO.AsignaturaDTO;
 import co.edu.unicauca.asae.parcial1.services.services.asignaturaServices.IAsignturaService;
 
@@ -38,9 +40,8 @@ public class AsignaturaRestController {
 
 	@PostMapping("/asignaturas")
 	public ResponseEntity<?> create(@Valid @RequestBody AsignaturaDTO prmAsignatura) {		
-		AsignaturaDTO objAsignatura = null;
-		objAsignatura = asignaturaService.save(prmAsignatura);
-		return new ResponseEntity<AsignaturaDTO>(objAsignatura, HttpStatus.CREATED);
+		ResponseEntity<?> response = asignaturaService.save(prmAsignatura);
+		return response;
 	}
 
     @GetMapping("/asignaturas/{id}")
@@ -57,29 +58,10 @@ public class AsignaturaRestController {
 		return objAsignatura;
 	}
 
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	@ExceptionHandler(ConstraintViolationException.class)
-	ResponseEntity<String> handleConstraintViolationException(ConstraintViolationException e) {
-		return new ResponseEntity<>("nombre del método y parametros erroneos: " + e.getMessage(),
-				HttpStatus.BAD_REQUEST);
-	}
-
-	@ResponseStatus(HttpStatus.BAD_REQUEST)
-	@ExceptionHandler(MethodArgumentNotValidException.class)
-	public Map<String, String> handleValidationExceptions(MethodArgumentNotValidException ex) {
-		Map<String, String> errors = new HashMap<>();
-		ex.getBindingResult().getAllErrors().forEach((error) -> {
-			String fieldName = ((FieldError) error).getField();
-			String errorMessage = error.getDefaultMessage();
-			errors.put(fieldName, errorMessage);
-		});
-
-		return errors;
-	}
-
 	@GetMapping("/asignaturas/nombre")
-	public ResponseEntity<?> buscarPorNombre(@RequestParam String nombre){
+	public ResponseEntity<?> buscarPorNombre(@Valid @RequestParam String nombre){
 		ResponseEntity<?> response = this.asignaturaService.buscarPorNombre(nombre);
 		return response;
 	}
+
 }

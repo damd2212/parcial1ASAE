@@ -34,4 +34,6 @@ public class Error {
    */
   @Accessors(chain = true)
   private String metodo;
+
 }
+
