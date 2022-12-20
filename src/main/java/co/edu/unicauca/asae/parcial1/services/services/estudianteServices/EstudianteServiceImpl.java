@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import javax.validation.constraints.Null;
+
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -147,6 +149,24 @@ public class EstudianteServiceImpl implements IEstudianteService {
         List<Estudiante> estudiantesEncontrados = this.servicioAccesoBDestudiante.findByIdPersonaIn(conjuntoIds);
         List<EstudianteDTO> estudiantesEncontradosDTO =this.estudianteModelMapper.map(estudiantesEncontrados, new TypeToken<List<EstudianteDTO>>(){}.getType());
         return estudiantesEncontradosDTO;
+    }
+
+    @Override
+    public boolean existeEstudianteConTipoYNumeroIdentificacion(String tipoIdentificacion, String noIdentificacion) {
+        boolean rta=false;
+        try{
+            Estudiante objEstudiante=this.servicioAccesoBDestudiante.findByTipoDeIdentificacionYnumeroDeIdentificacion(tipoIdentificacion, noIdentificacion);
+            System.out.println("Tipo= "+tipoIdentificacion+" No= "+noIdentificacion);
+            if(objEstudiante==null){
+                rta=false;
+            }else{
+                rta=true;
+            }
+            
+        }catch(Exception e){
+            return false;
+        }
+        return rta;
     }
 
 }

@@ -21,4 +21,5 @@ public interface IEstudianteService {
     public List<EstudianteDTO> buscarPorNombresApellidosEmail(String nombres,String apellidos, String correoElectronico);
 
     public List<EstudianteDTO> findByIdEnConjunto(Collection<Integer> conjuntoIds);
+    public boolean existeEstudianteConTipoYNumeroIdentificacion(String tipoIdentificacion,String noIdentificacion);
 }

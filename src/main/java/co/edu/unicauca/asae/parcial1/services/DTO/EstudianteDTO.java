@@ -4,12 +4,14 @@ import java.util.Date;
 import java.util.List;
 
 import javax.validation.Valid;
+import javax.validation.constraints.PastOrPresent;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
 public class EstudianteDTO extends PersonaDTO{
+    @PastOrPresent(message = "{estudiante.date.past}")
     private Date fechaIngreso;
     private String correoElectronico;
     @Valid

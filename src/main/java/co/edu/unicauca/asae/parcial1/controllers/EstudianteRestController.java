@@ -80,6 +80,12 @@ public class EstudianteRestController {
         bandera = this.estudianteService.delete(id); 
         return bandera;
     }
+    @GetMapping("/estudiantes/exist")
+    public Boolean exist(@RequestParam String tipoIdentificacion, @RequestParam String noIdentificacion) {
+        Boolean bandera = false;
+        bandera = this.estudianteService.existeEstudianteConTipoYNumeroIdentificacion(tipoIdentificacion, noIdentificacion); 
+        return bandera;
+    }
 
     @GetMapping("/estudiantes/nombres_apellidos_email")
     public ResponseEntity<?> buscarPorNombresApellidosEmail(@RequestParam String nombres,
