@@ -67,6 +67,7 @@ public class EstudianteServiceImpl implements IEstudianteService {
             objEstudianteAlmacenado.setNoIdentificacion(estudiante.getNoIdentificacion());
             objEstudianteAlmacenado.setFechaIngreso(estudiante.getFechaIngreso());
             objEstudianteAlmacenado.setTipoIdentificacion(estudiante.getTipoIdentificacion());
+            objEstudianteAlmacenado.setCorreoElectronico(estudiante.getCorreoElectronico());
             Direccion objDireccionAlmacenada = objEstudianteAlmacenado.getObjDireccion();
             objDireccionAlmacenada.setIdEstudiante(estudiante.getObjDireccion().getIdEstudiante());
             objDireccionAlmacenada.setCiudad(estudiante.getObjDireccion().getCiudad());
