@@ -24,7 +24,6 @@ import co.edu.unicauca.asae.parcial1.models.Docente;
 import co.edu.unicauca.asae.parcial1.repositories.AsignaturaRepository;
 import co.edu.unicauca.asae.parcial1.repositories.CursoRepository;
 import co.edu.unicauca.asae.parcial1.repositories.DocenteRepository;
-import co.edu.unicauca.asae.parcial1.response.AsignaturaRes.AsignaturaResponseRest;
 import co.edu.unicauca.asae.parcial1.services.DTO.AsignaturaDTO;
 import co.edu.unicauca.asae.parcial1.services.DTO.CursoDTO;
 import co.edu.unicauca.asae.parcial1.services.services.cursoServices.CursoServiceImpl;
@@ -110,24 +109,16 @@ public class AsignaturaServiceImpl implements IAsignturaService {
 
     @Override
     @Transactional(readOnly = true)
-    public ResponseEntity<AsignaturaResponseRest> buscarPorNombre(String nombre) {
-        AsignaturaResponseRest response = new AsignaturaResponseRest();
+    public ResponseEntity<?> buscarPorNombre(String nombre) {
+        
+        List<Asignatura> asignaturas = this.servicioAccesoBaseDatos.findByNombreIgnoreCaseContainingOrderByNombreAsc(nombre);
+        if (asignaturas.isEmpty()) {
+            List<AsignaturaDTO> asinaturasDTO = this.modelMapperB.map(asignaturas, new TypeToken<List<AsignaturaDTO>>() {}.getType());    
+            return new ResponseEntity<List<AsignaturaDTO>>(asinaturasDTO,HttpStatus.OK);
 
-        try {
-            List<Asignatura> asignaturas = this.servicioAccesoBaseDatos.findByNombreIgnoreCaseContainingOrderByNombreAsc(nombre);
-            if (asignaturas.isEmpty()) {
-                response.setMetaData("Respuesta nok", "204", "No existen asignaturas con ese nombre");
-                return new ResponseEntity<AsignaturaResponseRest>(response, HttpStatus.NO_CONTENT);
-            }
-            List<AsignaturaDTO> asinaturasDTO = this.modelMapperB.map(asignaturas, new TypeToken<List<AsignaturaDTO>>() {}.getType());
-            response.getAsignaturaResponse().setAsignaturas(asinaturasDTO);
-            response.setMetaData("Respuesta nok", "200", "Respuesta exitosa");
-
-        } catch (Exception e) {
-            response.setMetaData("Respuesta nok", "500", "Error al consultar asignaturas");
-            return new ResponseEntity<AsignaturaResponseRest>(response, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        return new ResponseEntity<AsignaturaResponseRest>(response,HttpStatus.OK);
+        } 
+        return new ResponseEntity<String>("No se encontraron asignaturas con el nombre " + nombre, HttpStatus.NO_CONTENT);
+        
     }
 
 }

@@ -25,8 +25,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 import org.springframework.http.HttpStatus;
-
-import co.edu.unicauca.asae.parcial1.response.AsignaturaRes.AsignaturaResponseRest;
 import co.edu.unicauca.asae.parcial1.services.DTO.AsignaturaDTO;
 import co.edu.unicauca.asae.parcial1.services.services.asignaturaServices.IAsignturaService;
 
@@ -80,8 +78,8 @@ public class AsignaturaRestController {
 	}
 
 	@GetMapping("/asignaturas/nombres")
-	public ResponseEntity<AsignaturaResponseRest> buscarPorNombre(@RequestParam String nombre){
-		ResponseEntity<AsignaturaResponseRest> response = this.asignaturaService.buscarPorNombre(nombre);
+	public ResponseEntity<?> buscarPorNombre(@RequestParam String nombre){
+		ResponseEntity<?> response = this.asignaturaService.buscarPorNombre(nombre);
 		return response;
 	}
 }
