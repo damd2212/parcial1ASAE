@@ -12,17 +12,18 @@ import lombok.Setter;
 
 @Getter @Setter
 public class EstudianteDTO extends PersonaDTO{
-
+    
     @PastOrPresent(message = "{estudiante.date.past}")
     private Date fechaIngreso;
+    
+    @Email(message = "estudiante.email.mask")
+    private String correoElectronico;
+
     @Valid
     private DireccionDTO objDireccion;
     
     @Valid
     private List<TelefonoDTO> listaTelefonos;
-    
-    @Email(message = "{estudiante.correoElectronico.mask}")
-    private String correoElectronico;
 
     public EstudianteDTO(){
         super();

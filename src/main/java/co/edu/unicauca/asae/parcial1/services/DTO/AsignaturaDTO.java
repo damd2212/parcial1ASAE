@@ -16,7 +16,6 @@ import lombok.Setter;
 public class AsignaturaDTO {
 
     private Integer idAsignatura;
-    //Peguntar las restrucciones par el nombre, min y max de caracteres
 
     @Size(min=5,max = 25,message = "{asignatura.nombre.size}")
     private String nombre;
