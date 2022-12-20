@@ -13,6 +13,8 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -27,12 +29,17 @@ public class DocenteServiceImpl implements IDocenteService{
     
     @Override
     @Transactional()
-    public DocenteDTO save(DocenteDTO prmDocente) {
+    public ResponseEntity<?> save(DocenteDTO prmDocente) {
         Docente objDocente=this.modelMapper.map(prmDocente, Docente.class);
         Docente objDocenteRespuesta=this.servicioAccesoBaseDatos.save(objDocente);
         DocenteDTO objDocenteDTO=this.modelMapper.map(objDocenteRespuesta, DocenteDTO.class);
-        return objDocenteDTO;
+        if(objDocenteDTO!=null){
+            return new ResponseEntity<DocenteDTO>(objDocenteDTO, HttpStatus.CREATED);
+        }else{
+            return new ResponseEntity<String>("Error al almacenar el docente", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
+
     @Override
     @Transactional
     public DocenteDTO findById(int prmId){
