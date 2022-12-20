@@ -19,6 +19,6 @@ public class PersonaDTO {
 	@Size(min = 5, max = 50, message = "{estudiante.name.length}")
     private String nombres;
     @NotNull(message = "{estudiante.lastname.empty}")
-	@Size(min = 3, max = 50, message = "{estudiante.lastname.length}")
+	@Size(min = 5, max = 50, message = "{estudiante.lastname.length}")
     private String apellidos;
 }
