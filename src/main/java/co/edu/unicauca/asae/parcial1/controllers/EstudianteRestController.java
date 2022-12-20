@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import co.edu.unicauca.asae.parcial1.services.DTO.EstudianteDTO;
 import co.edu.unicauca.asae.parcial1.services.services.estudianteServices.IEstudianteService;
-import org.springframework.http.HttpStatus;
+
 
 @RestController
 @RequestMapping("/api")
@@ -31,9 +31,8 @@ public class EstudianteRestController {
 
     @PostMapping("/estudiantes")
     public ResponseEntity<?> create(@Valid @RequestBody EstudianteDTO estudiante) {
-        EstudianteDTO objEstudiante = null;
-        objEstudiante = this.estudianteService.save(estudiante);
-        return new ResponseEntity<EstudianteDTO>(objEstudiante, HttpStatus.CREATED);
+        ResponseEntity<?> response =  this.estudianteService.save(estudiante);
+        return response;
     }
 
     @GetMapping("/estudiantes/{id}")
@@ -58,20 +57,9 @@ public class EstudianteRestController {
     }
 
     @PutMapping("/estudiantes/{id}")
-    public ResponseEntity<?> update(@Valid @RequestBody EstudianteDTO estudiante, @PathVariable Integer id) {
-        EstudianteDTO objEstudiante = null;
-        EstudianteDTO estudianteActual = estudianteService.findById(id);
-        if (estudianteActual != null) {
-            objEstudiante = estudianteService.update(id, estudiante);
-        }else{
-            return new ResponseEntity<EstudianteDTO>(objEstudiante, HttpStatus.NOT_FOUND);
-        }
-        if(objEstudiante!=null){
-            return new ResponseEntity<EstudianteDTO>(objEstudiante, HttpStatus.OK);
-        }else{
-            return new ResponseEntity<EstudianteDTO>(objEstudiante, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
-        
+    public ResponseEntity<EstudianteDTO> update(@Valid @RequestBody EstudianteDTO estudiante, @PathVariable Integer id) {
+        ResponseEntity<EstudianteDTO> response = estudianteService.update(id, estudiante);
+        return response;        
     }
 
     @DeleteMapping("/estudiantes/{id}")
@@ -82,9 +70,8 @@ public class EstudianteRestController {
     }
 
     @GetMapping("/estudiantes/nombres_apellidos_email")
-    public ResponseEntity<?> buscarPorNombresApellidosEmail(@RequestParam String nombres,
+    public ResponseEntity<List<EstudianteDTO>> buscarPorNombresApellidosEmail(@RequestParam String nombres,
             @RequestParam String apellidos, @RequestParam String correoElectronico) {
-        List<EstudianteDTO> lista = null;
         if(nombres.length()==0){
             nombres=" ";
         }
@@ -94,22 +81,14 @@ public class EstudianteRestController {
         if(correoElectronico.length()==0){
             correoElectronico=" ";
         }
-        lista = this.estudianteService.buscarPorNombresApellidosEmail(nombres, apellidos, correoElectronico);
-        if (lista.size() <= 0) {
-            return new ResponseEntity<List<EstudianteDTO>>(lista, HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<List<EstudianteDTO>>(lista, HttpStatus.OK);
+        ResponseEntity<List<EstudianteDTO>> response =  this.estudianteService.buscarPorNombresApellidosEmail(nombres, apellidos, correoElectronico);
+        return response;
     }
 
     @GetMapping("/estudiantes")
-    public ResponseEntity<?> showRangoClientes(@RequestBody Collection<Integer> conjuntoIds) {
-        System.out.println(conjuntoIds);
-        List<EstudianteDTO> lista = null;
-        lista = this.estudianteService.findByIdEnConjunto(conjuntoIds);
-        if (lista.size() <= 0) {
-            return new ResponseEntity<List<EstudianteDTO>>(lista, HttpStatus.NO_CONTENT);
-        }
-        return new ResponseEntity<List<EstudianteDTO>>(lista, HttpStatus.OK);
+    public ResponseEntity<List<EstudianteDTO>> showRangoClientes(@RequestBody Collection<Integer> conjuntoIds) {
+        ResponseEntity<List<EstudianteDTO>> response =  this.estudianteService.findByIdEnConjunto(conjuntoIds);
+        return response;
     }
 
   

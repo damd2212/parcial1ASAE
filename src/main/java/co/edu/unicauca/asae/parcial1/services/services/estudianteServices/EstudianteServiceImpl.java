@@ -10,6 +10,8 @@ import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.MessageSource;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -36,14 +38,19 @@ public class EstudianteServiceImpl implements IEstudianteService {
     private ModelMapper estudianteModelMapperpuntof;
 
     @Override
-    public EstudianteDTO save(EstudianteDTO estudiante) {
+    public ResponseEntity<?> save(EstudianteDTO estudiante) {
         Estudiante estudianteEntity = this.estudianteModelMapperpuntof.map(estudiante, Estudiante.class);
         estudianteEntity.getListaTelefonos().forEach(telefono -> telefono.setObjEstudiante(estudianteEntity));
         estudianteEntity.getObjDireccion().setObjEstudiante(estudianteEntity);
 
         Estudiante objEstudianteCreado = this.servicioAccesoBDestudiante.save(estudianteEntity);
         EstudianteDTO estudianteDTO = this.estudianteModelMapperpuntof.map(objEstudianteCreado, EstudianteDTO.class);
-        return estudianteDTO;
+        
+        if(estudianteDTO!=null){
+            return new ResponseEntity<EstudianteDTO>(estudianteDTO, HttpStatus.CREATED);
+        }else{
+            return new ResponseEntity<String>("Error al almacenar la asignatura", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Override
@@ -60,7 +67,7 @@ public class EstudianteServiceImpl implements IEstudianteService {
 
     @Override
     @Transactional(readOnly = false)
-    public EstudianteDTO update(Integer id, EstudianteDTO estudiante) {
+    public ResponseEntity<EstudianteDTO> update(Integer id, EstudianteDTO estudiante) {
         Optional<Estudiante> optional = this.servicioAccesoBDestudiante.findById(id);
         EstudianteDTO estudianteDTOActualizado = null;
 
@@ -91,9 +98,15 @@ public class EstudianteServiceImpl implements IEstudianteService {
             }
             Estudiante estudianteActualizado = this.servicioAccesoBDestudiante.save(objEstudianteAlmacenado);
             estudianteDTOActualizado = this.estudianteModelMapperpuntof.map(estudianteActualizado, EstudianteDTO.class);
+        }else{
+            return new ResponseEntity<EstudianteDTO>(estudianteDTOActualizado, HttpStatus.NOT_FOUND);
         }
-
-        return estudianteDTOActualizado;
+        if(estudianteDTOActualizado!=null){
+            return new ResponseEntity<EstudianteDTO>(estudianteDTOActualizado, HttpStatus.OK);
+        }else{
+            return new ResponseEntity<EstudianteDTO>(estudianteDTOActualizado, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        
     }
 
     private Integer existe(List<Telefono> listTelefonosAlmacenados, Integer idTelefonoActualizado) {
@@ -136,17 +149,23 @@ public class EstudianteServiceImpl implements IEstudianteService {
     }
 
     @Override
-    public List<EstudianteDTO> buscarPorNombresApellidosEmail(String nombres, String apellidos, String correoElectronico) {
+    public ResponseEntity<List<EstudianteDTO>> buscarPorNombresApellidosEmail(String nombres, String apellidos, String correoElectronico) {
         List<Estudiante> estudiantesEncontrados = this.servicioAccesoBDestudiante.findByNombresIgnoreCaseContainingOrApellidosIgnoreCaseContainingOrCorreoElectronicoIgnoreCaseContaining(nombres, apellidos, correoElectronico);
         List<EstudianteDTO> estudiantesEncontradosDTO =this.estudianteModelMapper.map(estudiantesEncontrados, new TypeToken<List<EstudianteDTO>>(){}.getType());
-        return estudiantesEncontradosDTO;
+        if(estudiantesEncontradosDTO.size()<=0){
+           return new ResponseEntity<List<EstudianteDTO>>(estudiantesEncontradosDTO, HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<List<EstudianteDTO>>(estudiantesEncontradosDTO, HttpStatus.OK);
     }
 
     @Override
-    public List<EstudianteDTO> findByIdEnConjunto(Collection<Integer> conjuntoIds) {
+    public ResponseEntity<List<EstudianteDTO>> findByIdEnConjunto(Collection<Integer> conjuntoIds) {
         List<Estudiante> estudiantesEncontrados = this.servicioAccesoBDestudiante.findByIdPersonaIn(conjuntoIds);
         List<EstudianteDTO> estudiantesEncontradosDTO =this.estudianteModelMapper.map(estudiantesEncontrados, new TypeToken<List<EstudianteDTO>>(){}.getType());
-        return estudiantesEncontradosDTO;
+        if(estudiantesEncontradosDTO.size()<=0){
+            return new ResponseEntity<List<EstudianteDTO>>(estudiantesEncontradosDTO, HttpStatus.NO_CONTENT);
+         }
+         return new ResponseEntity<List<EstudianteDTO>>(estudiantesEncontradosDTO, HttpStatus.OK);
     }
 
 }
