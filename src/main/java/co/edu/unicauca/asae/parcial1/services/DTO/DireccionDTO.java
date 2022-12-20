@@ -16,6 +16,9 @@ public class DireccionDTO {
     @Size(min=5,max = 25,message = "{direccion.direccionResidencia.size}")
     private String direccionResidencia;
     
+    @Size(min=4, max = 50, message ="{direccion.ciudad.size}")
     private String ciudad;
+    
+    @Size(min=4, max = 50, message ="{direccion.pais.size}")
     private String pais;
 }

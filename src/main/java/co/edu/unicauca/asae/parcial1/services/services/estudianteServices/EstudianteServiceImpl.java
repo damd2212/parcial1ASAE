@@ -37,12 +37,20 @@ public class EstudianteServiceImpl implements IEstudianteService {
 
     @Override
     public EstudianteDTO save(EstudianteDTO estudiante) {
-        Estudiante estudianteEntity = this.estudianteModelMapperpuntof.map(estudiante, Estudiante.class);
+        EstudianteDTO estudianteDTO = null;
+        Estudiante EstudianteEncontrado = this.servicioAccesoBDestudiante.findEstudianteByIdAndTipo(estudiante.getNoIdentificacion(), estudiante.getTipoIdentificacion());
+        if(EstudianteEncontrado != null){
+            System.out.println("repetido");
+        } else {
+            System.out.println("guardar en el sistema");
+        /*   Estudiante estudianteEntity = this.estudianteModelMapperpuntof.map(estudiante, Estudiante.class);
         estudianteEntity.getListaTelefonos().forEach(telefono -> telefono.setObjEstudiante(estudianteEntity));
         estudianteEntity.getObjDireccion().setObjEstudiante(estudianteEntity);
 
         Estudiante objEstudianteCreado = this.servicioAccesoBDestudiante.save(estudianteEntity);
-        EstudianteDTO estudianteDTO = this.estudianteModelMapperpuntof.map(objEstudianteCreado, EstudianteDTO.class);
+        estudianteDTO = this.estudianteModelMapperpuntof.map(objEstudianteCreado, EstudianteDTO.class);
+        */
+        }
         return estudianteDTO;
     }
 
