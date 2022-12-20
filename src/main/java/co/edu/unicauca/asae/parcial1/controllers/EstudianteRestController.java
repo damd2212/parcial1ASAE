@@ -2,7 +2,12 @@ package co.edu.unicauca.asae.parcial1.controllers;
 
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,15 +23,16 @@ import co.edu.unicauca.asae.parcial1.services.services.estudianteServices.IEstud
 
 @RestController
 @RequestMapping("/api")
+@Validated
 public class EstudianteRestController {
     @Autowired
     private IEstudianteService estudianteService;
     
     @PostMapping("/estudiantes")
-    public EstudianteDTO create(@RequestBody EstudianteDTO estudiante) {
-    	EstudianteDTO objEstudiante = null;
-    	objEstudiante = this.estudianteService.save(estudiante);
-    	return objEstudiante;
+    public ResponseEntity<EstudianteDTO> create(@Valid @RequestBody EstudianteDTO estudiante) {
+        EstudianteDTO objEstudiante = this.estudianteService.save(estudiante);
+        ResponseEntity<EstudianteDTO> objRespuesta = new ResponseEntity<EstudianteDTO>(objEstudiante, HttpStatus.CREATED);
+    	return objRespuesta;
     }
     
     @GetMapping("/estudiantes/{id}")
@@ -51,7 +57,7 @@ public class EstudianteRestController {
     }
 
     @PutMapping("/estudiantes/{id}")
-	public EstudianteDTO update(@RequestBody EstudianteDTO estudiante, @PathVariable Integer id) {
+	public EstudianteDTO update(@Valid @RequestBody EstudianteDTO estudiante, @PathVariable Integer id) {
 		EstudianteDTO objEstudiante = null;
 		EstudianteDTO estudianteActual = estudianteService.findById(id);
 		if (estudianteActual != null) {

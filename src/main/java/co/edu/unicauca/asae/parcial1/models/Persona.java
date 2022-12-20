@@ -25,9 +25,9 @@ public class Persona {
     @Column(nullable = false,length = 50)
     private String tipoIdentificacion;
 
-    @Column(nullable = false,length = 100)
+    @Column(nullable = false,length = 50)
     private String nombres;
 
-    @Column(nullable = false,length = 100)
+    @Column(nullable = false,length = 50)
     private String apellidos;
 }
