@@ -17,10 +17,10 @@ public class EstudianteDTO extends PersonaDTO{
     private Date fechaIngreso;
 
 
-    @NotNull(message = "{direccion.empty}")
+    //@NotNull(message = "{direccion.empty}")
     private DireccionDTO objDireccion;
     
-    @Size(min = 2,message = "{telefonos.size}")
+    //@Size(min = 2,message = "{telefonos.size}")
     private List<TelefonoDTO> listaTelefonos;
 
     public EstudianteDTO(){

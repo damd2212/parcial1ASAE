@@ -6,9 +6,13 @@ import java.util.Optional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import co.edu.unicauca.asae.parcial1.exceptionControllers.exceptions.EntidadYaExisteException;
+import co.edu.unicauca.asae.parcial1.exceptionControllers.exceptions.ReglaNegocioExcepcion;
 import co.edu.unicauca.asae.parcial1.models.Direccion;
 import co.edu.unicauca.asae.parcial1.models.Estudiante;
 import co.edu.unicauca.asae.parcial1.models.Telefono;
@@ -123,6 +127,46 @@ public class EstudianteServiceImpl implements IEstudianteService {
             bandera = true;
         }
         return bandera;
+    }
+
+    @Override
+    public ResponseEntity<?> register(EstudianteDTO estudiante) {
+
+
+        Estudiante objEstudiante = this.servicioAccesoBDestudiante.findEstudianteByIdAndTipo(estudiante.getNoIdentificacion(),estudiante.getTipoIdentificacion());
+        System.out.println("--------------");
+        System.out.println(objEstudiante);
+        System.out.println("--------------");
+        if (objEstudiante != null) {
+            EntidadYaExisteException objException = new EntidadYaExisteException("Estudiante con identificacion: " + estudiante.getNoIdentificacion() + " de tipo " + estudiante.getTipoIdentificacion() +" ya existe en la base de datos");
+            throw objException;
+        }
+        
+        
+        Estudiante estudianteEntity = this.estudianteModelMapperpuntof.map(estudiante, Estudiante.class);
+
+        EstudianteDTO estudianteDTO = null;
+
+        if (estudianteEntity.getObjDireccion() != null) {
+
+            if (estudianteEntity.getListaTelefonos().size() >= 2) {
+
+                estudianteEntity.getListaTelefonos().forEach(telefono -> telefono.setObjEstudiante(estudianteEntity));
+                estudianteEntity.getObjDireccion().setObjEstudiante(estudianteEntity);
+
+                Estudiante objEstudianteCreado = this.servicioAccesoBDestudiante.save(estudianteEntity);
+                estudianteDTO = this.estudianteModelMapperpuntof.map(objEstudianteCreado, EstudianteDTO.class);
+            }else{
+                ReglaNegocioExcepcion objReglaNegocioExcepciontel = new ReglaNegocioExcepcion("Al registrar un estudiante debe tener como minimo dos telefonos");
+                throw objReglaNegocioExcepciontel;
+            }
+            
+        }else{
+            ReglaNegocioExcepcion objReglaNegocioExcepcion = new ReglaNegocioExcepcion("Al registrar un estudiante la direccion no puede ser nula");
+            throw objReglaNegocioExcepcion;
+        }
+        
+        return new ResponseEntity<EstudianteDTO>(estudianteDTO, HttpStatus.CREATED);
     }
 
 }

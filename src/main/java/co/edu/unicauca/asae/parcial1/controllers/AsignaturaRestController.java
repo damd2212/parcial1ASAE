@@ -77,7 +77,7 @@ public class AsignaturaRestController {
 		return errors;
 	}
 
-	@GetMapping("/asignaturas/nombres")
+	@GetMapping("/asignaturas/nombre")
 	public ResponseEntity<?> buscarPorNombre(@RequestParam String nombre){
 		ResponseEntity<?> response = this.asignaturaService.buscarPorNombre(nombre);
 		return response;

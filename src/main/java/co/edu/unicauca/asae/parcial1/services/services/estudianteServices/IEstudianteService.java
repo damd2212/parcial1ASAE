@@ -1,6 +1,8 @@
 package co.edu.unicauca.asae.parcial1.services.services.estudianteServices;
 
 
+import org.springframework.http.ResponseEntity;
+
 import co.edu.unicauca.asae.parcial1.services.DTO.EstudianteDTO;
 
 public interface IEstudianteService {
@@ -14,4 +16,6 @@ public interface IEstudianteService {
     public EstudianteDTO update(Integer id, EstudianteDTO estudiante);
     
     public Boolean delete(Integer id);
+
+    public ResponseEntity<?> register(EstudianteDTO estudiante);
 }

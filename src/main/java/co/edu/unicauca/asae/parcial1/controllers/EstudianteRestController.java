@@ -75,4 +75,12 @@ public class EstudianteRestController {
     	}
     	return bandera;
     }
+
+
+    @PostMapping("/estudiantes/val")
+    public ResponseEntity<?> register(@Valid @RequestBody EstudianteDTO estudiante) {
+        ResponseEntity<?> objRespuesta = this.estudianteService.register(estudiante);
+    	return objRespuesta;
+    }
+
 }
