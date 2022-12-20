@@ -3,6 +3,8 @@ package co.edu.unicauca.asae.parcial1.services.DTO;
 import java.util.Date;
 import java.util.List;
 
+import javax.validation.Valid;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,7 +12,7 @@ import lombok.Setter;
 public class EstudianteDTO extends PersonaDTO{
     private Date fechaIngreso;
     private String correoElectronico;
-    
+    @Valid
     private DireccionDTO objDireccion;
     private List<TelefonoDTO> listaTelefonos;
     

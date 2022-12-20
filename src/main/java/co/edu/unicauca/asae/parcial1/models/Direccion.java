@@ -9,6 +9,9 @@ import javax.persistence.JoinColumn;
 import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.Valid;
+
+import org.springframework.validation.annotation.Validated;
 
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -23,7 +26,8 @@ public class Direccion {
     @Id
 	private Integer idEstudiante;
 
-    @Column(nullable = false,length = 30)
+    
+    @Column(nullable = false)
     private String direccionResidencia;
 
     @Column(nullable = false,length = 30)

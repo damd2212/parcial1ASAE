@@ -1,14 +1,14 @@
 package co.edu.unicauca.asae.parcial1.controllers;
 
+import java.util.Collection;
 import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Optional;
+
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -16,26 +16,24 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
-import co.edu.unicauca.asae.parcial1.models.Estudiante;
 import co.edu.unicauca.asae.parcial1.services.DTO.EstudianteDTO;
 import co.edu.unicauca.asae.parcial1.services.services.estudianteServices.IEstudianteService;
 import org.springframework.http.HttpStatus;
 
 @RestController
 @RequestMapping("/api")
-@Validated()
+@Validated
 public class EstudianteRestController {
     @Autowired
     private IEstudianteService estudianteService;
 
     @PostMapping("/estudiantes")
-    public EstudianteDTO create(@RequestBody EstudianteDTO estudiante) {
+    public ResponseEntity<?> create(@Valid @RequestBody EstudianteDTO estudiante) {
         EstudianteDTO objEstudiante = null;
         objEstudiante = this.estudianteService.save(estudiante);
-        return objEstudiante;
+        return new ResponseEntity<EstudianteDTO>(objEstudiante, HttpStatus.CREATED);
     }
 
     @GetMapping("/estudiantes/{id}")
@@ -60,22 +58,26 @@ public class EstudianteRestController {
     }
 
     @PutMapping("/estudiantes/{id}")
-    public EstudianteDTO update(@RequestBody EstudianteDTO estudiante, @PathVariable Integer id) {
+    public ResponseEntity<?> update(@Valid @RequestBody EstudianteDTO estudiante, @PathVariable Integer id) {
         EstudianteDTO objEstudiante = null;
         EstudianteDTO estudianteActual = estudianteService.findById(id);
         if (estudianteActual != null) {
             objEstudiante = estudianteService.update(id, estudiante);
+        }else{
+            return new ResponseEntity<EstudianteDTO>(objEstudiante, HttpStatus.NOT_FOUND);
         }
-        return objEstudiante;
+        if(objEstudiante!=null){
+            return new ResponseEntity<EstudianteDTO>(objEstudiante, HttpStatus.OK);
+        }else{
+            return new ResponseEntity<EstudianteDTO>(objEstudiante, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        
     }
 
     @DeleteMapping("/estudiantes/{id}")
     public Boolean delete(@PathVariable Integer id) {
         Boolean bandera = false;
-        EstudianteDTO objEstudiante = this.estudianteService.findById(id);
-        if (objEstudiante != null) {
-            bandera = this.estudianteService.delete(id);
-        }
+        bandera = this.estudianteService.delete(id); 
         return bandera;
     }
 
@@ -99,21 +101,16 @@ public class EstudianteRestController {
         return new ResponseEntity<List<EstudianteDTO>>(lista, HttpStatus.OK);
     }
 
-    @GetMapping("/estudiantes/{id1}/{id2}")
-    public ResponseEntity<?> showRangoClientes(@PathVariable Integer id1, @PathVariable Integer id2) {
+    @GetMapping("/estudiantes")
+    public ResponseEntity<?> showRangoClientes(@RequestBody Collection<Integer> conjuntoIds) {
+        System.out.println(conjuntoIds);
         List<EstudianteDTO> lista = null;
-        System.out.println("Buscando en el rango: " + id1 + " y " + id2);
-        lista = this.estudianteService.findByIdPorRango(id1, id2);
+        lista = this.estudianteService.findByIdEnConjunto(conjuntoIds);
         if (lista.size() <= 0) {
             return new ResponseEntity<List<EstudianteDTO>>(lista, HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<List<EstudianteDTO>>(lista, HttpStatus.OK);
     }
 
-    @ResponseStatus(HttpStatus.NOT_FOUND)
-    @ExceptionHandler(NoSuchElementException.class)
-    ResponseEntity<String> handleConstraintViolationException(NoSuchElementException e) {
-        return new ResponseEntity<>("El estudiante no existe en la  BD",
-                HttpStatus.NOT_FOUND);
-    }
+  
 }

@@ -23,7 +23,8 @@ public class Estudiante extends Persona{
     @OneToMany(cascade = {CascadeType.PERSIST,CascadeType.REMOVE,CascadeType.REFRESH},fetch = FetchType.EAGER, mappedBy = "objEstudiante")
     private List<Telefono> listaTelefonos;
     ////Para el punto f es Eager
-	@OneToOne(optional = false, cascade = { CascadeType.PERSIST,CascadeType.REMOVE}, fetch = FetchType.EAGER, mappedBy = "objEstudiante")
+  
+	@OneToOne(cascade = { CascadeType.PERSIST,CascadeType.REMOVE,CascadeType.REFRESH}, fetch = FetchType.EAGER, mappedBy = "objEstudiante")
     private Direccion objDireccion;
 
     @Column(nullable = false)

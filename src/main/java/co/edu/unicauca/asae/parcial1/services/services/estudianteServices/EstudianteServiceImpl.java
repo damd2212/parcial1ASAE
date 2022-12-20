@@ -1,5 +1,6 @@
 package co.edu.unicauca.asae.parcial1.services.services.estudianteServices;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
@@ -8,6 +9,7 @@ import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -70,6 +72,7 @@ public class EstudianteServiceImpl implements IEstudianteService {
             objEstudianteAlmacenado.setNoIdentificacion(estudiante.getNoIdentificacion());
             objEstudianteAlmacenado.setFechaIngreso(estudiante.getFechaIngreso());
             objEstudianteAlmacenado.setTipoIdentificacion(estudiante.getTipoIdentificacion());
+            objEstudianteAlmacenado.setCorreoElectronico(estudiante.getCorreoElectronico());
             Direccion objDireccionAlmacenada = objEstudianteAlmacenado.getObjDireccion();
             objDireccionAlmacenada.setIdEstudiante(estudiante.getObjDireccion().getIdEstudiante());
             objDireccionAlmacenada.setCiudad(estudiante.getObjDireccion().getCiudad());
@@ -120,7 +123,7 @@ public class EstudianteServiceImpl implements IEstudianteService {
         boolean bandera = false;
         Optional<Estudiante> optional = this.servicioAccesoBDestudiante.findById(id);
         if (!optional.isPresent()) {
-            NoSuchElementException objException = new NoSuchElementException();
+            RecursoNoExisteException objException = new RecursoNoExisteException("El estudiante con id "+ id + " no existe en la base de datos");
             throw objException;
         } else {
             Estudiante objEstudiante = optional.get();
@@ -140,8 +143,8 @@ public class EstudianteServiceImpl implements IEstudianteService {
     }
 
     @Override
-    public List<EstudianteDTO> findByIdPorRango(int id1, int id2) {
-        List<Estudiante> estudiantesEncontrados = this.servicioAccesoBDestudiante.findByIdPersonaBetween(id1, id2);
+    public List<EstudianteDTO> findByIdEnConjunto(Collection<Integer> conjuntoIds) {
+        List<Estudiante> estudiantesEncontrados = this.servicioAccesoBDestudiante.findByIdPersonaIn(conjuntoIds);
         List<EstudianteDTO> estudiantesEncontradosDTO =this.estudianteModelMapper.map(estudiantesEncontrados, new TypeToken<List<EstudianteDTO>>(){}.getType());
         return estudiantesEncontradosDTO;
     }

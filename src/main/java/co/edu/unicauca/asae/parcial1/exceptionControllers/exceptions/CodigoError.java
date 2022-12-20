@@ -7,7 +7,7 @@ import lombok.RequiredArgsConstructor;
 @Getter
 public enum CodigoError {
 
-    RECURSO_NO_ENCONTRADO("GC-0001", "Recurso no encontrado");
+    RECURSO_NO_ENCONTRADO("GC-0008", "Recurso no encontrado");
 
     private final String codigo;
     private final String llaveMensaje;
