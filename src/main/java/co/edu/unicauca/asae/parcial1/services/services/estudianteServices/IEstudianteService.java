@@ -23,4 +23,7 @@ public interface IEstudianteService {
     public ResponseEntity<List<EstudianteDTO>> buscarPorNombresApellidosEmail(String nombres,String apellidos, String correoElectronico);
 
     public ResponseEntity<List<EstudianteDTO>> findByIdEnConjunto(Collection<Integer> conjuntoIds);
+    
+    public boolean existeEstudianteConTipoYNumeroIdentificacion(String tipoIdentificacion,String noIdentificacion);
+
 }
