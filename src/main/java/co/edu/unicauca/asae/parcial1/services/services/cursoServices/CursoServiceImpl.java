@@ -7,6 +7,8 @@ import javax.transaction.Transactional;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import co.edu.unicauca.asae.parcial1.models.Asignatura;
@@ -35,7 +37,7 @@ public class CursoServiceImpl implements ICursoService{
      */
     @Override
     @Transactional()
-    public CursoDTO save(CursoDTO prmCurso, int id_asignatura) {
+    public ResponseEntity<?> save(CursoDTO prmCurso, int id_asignatura) {
         CursoDTO objCursoDTO = null;
         Optional<Asignatura> optional = this.servicioAccesoBaseDatosAsig.findById(id_asignatura);
         Optional<Curso> optional2 = this.servicioAccesoBaseDatos.findById(prmCurso.getIdCurso());
@@ -46,9 +48,9 @@ public class CursoServiceImpl implements ICursoService{
             Curso objCursoRespuesta=this.servicioAccesoBaseDatos.save(objCurso);
             objCursoDTO=this.modelMapper.map(objCursoRespuesta, CursoDTO.class);
         }else{
-            System.out.println("Error al almacenar el curso");
+            return new ResponseEntity<String>("Error al almacenar el curso", HttpStatus.INTERNAL_SERVER_ERROR);
         }
-        return objCursoDTO;
+        return new ResponseEntity<CursoDTO>(objCursoDTO, HttpStatus.CREATED);
     }
 
 

@@ -33,9 +33,8 @@ public class DocenteRestController {
 
 	@PostMapping("/docentes")
 	public ResponseEntity<?> create(@Valid @RequestBody DocenteDTO prmDocente) {
-		DocenteDTO objDocente = null;
-		objDocente = docenteService.save(prmDocente);
-		return new ResponseEntity<DocenteDTO>(objDocente, HttpStatus.CREATED);
+		ResponseEntity<?> response = docenteService.save(prmDocente);
+		return response;
 	}
 
 	@GetMapping("/docentes/{id}")

@@ -12,6 +12,8 @@ import javax.validation.constraints.Null;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -59,7 +61,7 @@ public class AsignaturaServiceImpl implements IAsignturaService {
 
     @Override
     @Transactional()
-    public AsignaturaDTO save(AsignaturaDTO prmAsignatura) {
+    public ResponseEntity<?> save(AsignaturaDTO prmAsignatura) {
         Asignatura objAsignatura = this.modelMapperB.map(prmAsignatura, Asignatura.class);
         for (int i=0;i<objAsignatura.getListaCursos().size();i++) {
             if(objAsignatura.getListaCursos().get(i).getIdCurso()!=null){
@@ -91,7 +93,12 @@ public class AsignaturaServiceImpl implements IAsignturaService {
         Asignatura objAsignaturaRta = this.servicioAccesoBaseDatos.save(objAsignatura);
         
         AsignaturaDTO objAsignaturaDTO = this.modelMapperB.map(objAsignaturaRta, AsignaturaDTO.class);
-        return objAsignaturaDTO;
+        
+        if(objAsignaturaDTO!=null){
+            return new ResponseEntity<AsignaturaDTO>(objAsignaturaDTO, HttpStatus.CREATED);
+        }else{
+            return new ResponseEntity<String>("Error al almacenar la asignatura", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Override

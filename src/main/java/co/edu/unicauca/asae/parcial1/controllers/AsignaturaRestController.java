@@ -23,8 +23,6 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 
-import org.springframework.http.HttpStatus;
-
 import co.edu.unicauca.asae.parcial1.services.DTO.AsignaturaDTO;
 import co.edu.unicauca.asae.parcial1.services.services.asignaturaServices.IAsignturaService;
 
@@ -38,9 +36,8 @@ public class AsignaturaRestController {
 
 	@PostMapping("/asignaturas")
 	public ResponseEntity<?> create(@Valid @RequestBody AsignaturaDTO prmAsignatura) {		
-		AsignaturaDTO objAsignatura = null;
-		objAsignatura = asignaturaService.save(prmAsignatura);
-		return new ResponseEntity<AsignaturaDTO>(objAsignatura, HttpStatus.CREATED);
+		ResponseEntity<?> response = asignaturaService.save(prmAsignatura);
+		return response;
 	}
 
     @GetMapping("/asignaturas/{id}")

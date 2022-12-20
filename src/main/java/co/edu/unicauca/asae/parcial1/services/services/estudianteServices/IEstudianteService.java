@@ -5,22 +5,26 @@ import java.util.Collection;
 import java.util.List;
 
 import co.edu.unicauca.asae.parcial1.models.Estudiante;
+import org.springframework.http.ResponseEntity;
+
 import co.edu.unicauca.asae.parcial1.services.DTO.EstudianteDTO;
 
 public interface IEstudianteService {
 	
-	public EstudianteDTO save(EstudianteDTO estudiante);
+	public ResponseEntity<?> save(EstudianteDTO estudiante);
 	
     public EstudianteDTO findById(Integer idEstudainte);
 
     public EstudianteDTO findByIdG(Integer idEstudainte);
 
-    public EstudianteDTO update(Integer id, EstudianteDTO estudiante);
+    public ResponseEntity<EstudianteDTO> update(Integer id, EstudianteDTO estudiante);
     
     public Boolean delete(Integer id);
     
-    public List<EstudianteDTO> buscarPorNombresApellidosEmail(String nombres,String apellidos, String correoElectronico);
+    public ResponseEntity<List<EstudianteDTO>> buscarPorNombresApellidosEmail(String nombres,String apellidos, String correoElectronico);
 
-    public List<EstudianteDTO> findByIdEnConjunto(Collection<Integer> conjuntoIds);
     public EstudianteDTO existeEstudianteConTipoYNumeroIdentificacion(String tipoIdentificacion,String noIdentificacion);
+    public ResponseEntity<List<EstudianteDTO>> findByIdEnConjunto(Collection<Integer> conjuntoIds);
+    
+
 }
