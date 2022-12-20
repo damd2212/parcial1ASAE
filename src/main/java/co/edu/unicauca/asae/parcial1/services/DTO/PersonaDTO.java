@@ -12,12 +12,19 @@ import lombok.Setter;
 @NoArgsConstructor @AllArgsConstructor
 public class PersonaDTO {
     private Integer idPersona;
+    
     @NotNull(message = "{persona.noIdentificacion.empty}")
     private String noIdentificacion;
+    
     @NotNull(message = "{persona.tipoIdentificacion.empty}")
     private String tipoIdentificacion;
-    @NotNull(message = "{persona.nombres.empty}")
+    
+    @NotNull(message = "{estudiante.name.empty}")
+	  @Size(min = 5, max = 50, message = "{estudiante.name.length}")
     private String nombres;
-    @NotNull(message = "{persona.apellidos.empty}")
+    
+    @NotNull(message = "{estudiante.lastname.empty}")
+	  @Size(min = 5, max = 50, message = "{estudiante.lastname.length}")
     private String apellidos;
+   
 }

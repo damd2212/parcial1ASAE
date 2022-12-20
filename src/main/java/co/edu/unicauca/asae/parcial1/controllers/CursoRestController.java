@@ -25,9 +25,8 @@ public class CursoRestController {
 
 	@PostMapping("/cursos")
 	public ResponseEntity<?> create(@Valid @RequestBody CursoDTO prmCurso, @RequestParam("asignatura") Integer id_asignatura) {
-		CursoDTO objCurso = null;
-		objCurso = cursoService.save(prmCurso,id_asignatura);
-		return new ResponseEntity<CursoDTO>(objCurso, HttpStatus.CREATED);
+		ResponseEntity<?> response = cursoService.save(prmCurso,id_asignatura);
+		return response;
 	}
 
 }
