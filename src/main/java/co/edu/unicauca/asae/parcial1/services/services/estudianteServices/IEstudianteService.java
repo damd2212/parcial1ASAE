@@ -4,6 +4,7 @@ package co.edu.unicauca.asae.parcial1.services.services.estudianteServices;
 import java.util.Collection;
 import java.util.List;
 
+import co.edu.unicauca.asae.parcial1.models.Estudiante;
 import co.edu.unicauca.asae.parcial1.services.DTO.EstudianteDTO;
 
 public interface IEstudianteService {
@@ -21,5 +22,5 @@ public interface IEstudianteService {
     public List<EstudianteDTO> buscarPorNombresApellidosEmail(String nombres,String apellidos, String correoElectronico);
 
     public List<EstudianteDTO> findByIdEnConjunto(Collection<Integer> conjuntoIds);
-    public boolean existeEstudianteConTipoYNumeroIdentificacion(String tipoIdentificacion,String noIdentificacion);
+    public EstudianteDTO existeEstudianteConTipoYNumeroIdentificacion(String tipoIdentificacion,String noIdentificacion);
 }

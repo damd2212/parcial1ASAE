@@ -152,21 +152,17 @@ public class EstudianteServiceImpl implements IEstudianteService {
     }
 
     @Override
-    public boolean existeEstudianteConTipoYNumeroIdentificacion(String tipoIdentificacion, String noIdentificacion) {
-        boolean rta=false;
-        try{
-            Estudiante objEstudiante=this.servicioAccesoBDestudiante.findByTipoDeIdentificacionYnumeroDeIdentificacion(tipoIdentificacion, noIdentificacion);
-            System.out.println("Tipo= "+tipoIdentificacion+" No= "+noIdentificacion);
-            if(objEstudiante==null){
-                rta=false;
-            }else{
-                rta=true;
-            }
-            
-        }catch(Exception e){
-            return false;
+    public EstudianteDTO existeEstudianteConTipoYNumeroIdentificacion(String tipoIdentificacion, String noIdentificacion) {
+        EstudianteDTO objEstudiante=null;
+        
+        Estudiante objEstudianteE=this.servicioAccesoBDestudiante.findByTipoDeIdentificacionYnumeroDeIdentificacion(tipoIdentificacion, noIdentificacion);
+        if(objEstudianteE==null){
+            EntidadNoExisteException objException = new EntidadNoExisteException("Estudiante con Tipo Identificacion: "+tipoIdentificacion+" e identificación: "+noIdentificacion+" no existe en la BD");
+            throw objException;
+        }else{
+            objEstudiante=this.estudianteModelMapperpuntof.map(objEstudianteE, EstudianteDTO.class);
         }
-        return rta;
+        return objEstudiante;
     }
 
 }

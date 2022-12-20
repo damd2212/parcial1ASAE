@@ -92,10 +92,10 @@ public class EstudianteRestController {
         return bandera;
     }
     @GetMapping("/estudiantes/exist")
-    public Boolean exist(@RequestParam String tipoIdentificacion, @RequestParam String noIdentificacion) {
-        Boolean bandera = false;
-        bandera = this.estudianteService.existeEstudianteConTipoYNumeroIdentificacion(tipoIdentificacion, noIdentificacion); 
-        return bandera;
+    public ResponseEntity<?> exist(@RequestParam String tipoIdentificacion, @RequestParam String noIdentificacion) {
+        EstudianteDTO objStudent = this.estudianteService.existeEstudianteConTipoYNumeroIdentificacion(tipoIdentificacion, noIdentificacion); 
+        ResponseEntity<EstudianteDTO> objRespuesta = new ResponseEntity<EstudianteDTO>(objStudent, HttpStatus.OK);
+        return objRespuesta;
     }
 
     @GetMapping("/estudiantes/nombres_apellidos_email")
