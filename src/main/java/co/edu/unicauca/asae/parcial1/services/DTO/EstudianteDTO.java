@@ -3,18 +3,19 @@ package co.edu.unicauca.asae.parcial1.services.DTO;
 import java.util.Date;
 import java.util.List;
 
-import javax.validation.constraints.PastOrPresent;
+import javax.validation.Valid;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
 public class EstudianteDTO extends PersonaDTO{
-    @PastOrPresent(message = "{estudiate.date.past}")
     private Date fechaIngreso;
-
+    private String correoElectronico;
+    @Valid
     private DireccionDTO objDireccion;
     private List<TelefonoDTO> listaTelefonos;
+    
 
     public EstudianteDTO(){
         super();

@@ -32,7 +32,7 @@ public class Asignatura {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer idAsignatura;
 
-    @Column(nullable = false,length = 30)
+    @Column(nullable = false,length = 25)
     private String nombre;
 
     //Preguntar si el fetch es EAGER o no
