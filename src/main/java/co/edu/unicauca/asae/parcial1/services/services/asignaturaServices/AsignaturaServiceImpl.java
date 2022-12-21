@@ -1,6 +1,7 @@
 package co.edu.unicauca.asae.parcial1.services.services.asignaturaServices;
 
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.modelmapper.ModelMapper;
@@ -129,12 +130,13 @@ public class AsignaturaServiceImpl implements IAsignturaService {
     public ResponseEntity<?> buscarPorNombre(String nombre) {
         
         List<Asignatura> asignaturas = this.servicioAccesoBaseDatos.findByNombreIgnoreCaseContainingOrderByNombreAsc(nombre);
+        List<AsignaturaDTO> asinaturasDTO = new ArrayList<>();
         if (!asignaturas.isEmpty()) {
-            List<AsignaturaDTO> asinaturasDTO = this.modelMapperB.map(asignaturas, new TypeToken<List<AsignaturaDTO>>() {}.getType());    
+            asinaturasDTO = this.modelMapperB.map(asignaturas, new TypeToken<List<AsignaturaDTO>>() {}.getType());    
             return new ResponseEntity<List<AsignaturaDTO>>(asinaturasDTO,HttpStatus.OK);
 
         } 
-        return new ResponseEntity<String>("No se encontraron asignaturas con el nombre " + nombre, HttpStatus.NO_CONTENT);
+        return new ResponseEntity<List<AsignaturaDTO>>(asinaturasDTO, HttpStatus.NO_CONTENT);
         
     }
 
