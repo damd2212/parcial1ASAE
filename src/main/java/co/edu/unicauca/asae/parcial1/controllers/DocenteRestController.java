@@ -1,6 +1,7 @@
 package co.edu.unicauca.asae.parcial1.controllers;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Positive;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -34,7 +35,7 @@ public class DocenteRestController {
 	*/
 
 	@GetMapping("/docentes/{id}")
-	public ResponseEntity<DocenteDTO> index(@PathVariable int id) {
+	public ResponseEntity<DocenteDTO> index(@PathVariable @Positive(message = "{id.positive}") int id) {
 		ResponseEntity<DocenteDTO> response = this.docenteService.findById(id);
 		return response;
 	}

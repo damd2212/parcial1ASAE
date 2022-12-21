@@ -1,6 +1,7 @@
 package co.edu.unicauca.asae.parcial1.services.DTO;
 
 import javax.validation.constraints.Size;
+import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -12,17 +13,17 @@ import lombok.Setter;
 public class PersonaDTO {
     private Integer idPersona;
     
-    @NotNull(message = "{persona.noIdentificacion.empty}")
+    @NotEmpty(message = "{persona.noIdentificacion.empty}")
     private String noIdentificacion;
     
-    @NotNull(message = "{persona.tipoIdentificacion.empty}")
+    @NotEmpty(message = "{persona.tipoIdentificacion.empty}")
     private String tipoIdentificacion;
     
-    @NotNull(message = "{estudiante.name.empty}")
-	  @Size(min = 3,max = 50,message = "{persona.nombre.size}")
+    @NotEmpty(message = "{estudiante.name.empty}")
+	@Size(min = 3,max = 50,message = "{persona.nombre.size}")
     private String nombres;
     
-    @NotNull(message = "{estudiante.lastname.empty}")
+    @NotEmpty(message = "{estudiante.lastname.empty}")
     @Size(min = 3,max = 50,message = "{persona.apellido.size}")
     private String apellidos;
    

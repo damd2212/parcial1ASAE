@@ -2,6 +2,8 @@ package co.edu.unicauca.asae.parcial1.controllers;
 
 
 import javax.validation.Valid;
+import javax.validation.constraints.Positive;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -30,7 +32,7 @@ public class AsignaturaRestController {
 	}
 
     @GetMapping("/asignaturas/{id}")
-	public ResponseEntity<AsignaturaDTO> show(@PathVariable Integer id) {
+	public ResponseEntity<AsignaturaDTO> show(@PathVariable @Positive(message = "{id.positive}") Integer id) {
 		ResponseEntity<AsignaturaDTO> response =  asignaturaService.findById(id);
 		return response;
 	}
