@@ -49,7 +49,7 @@ public class CursoServiceImpl implements ICursoService{
         }
         Optional<Asignatura> optionala = this.servicioAccesoBaseDatosAsig.findById(id_asignatura);
         if(optionala.isPresent()==false){
-            EntidadNoExisteException exception = new EntidadNoExisteException("Asignatura con id "+prmCurso.getIdCurso()+" no existe en la BD");
+            EntidadNoExisteException exception = new EntidadNoExisteException("Asignatura con id "+id_asignatura+" no existe en la BD");
             throw exception;
         }
         CursoDTO objCursoDTO = null;
