@@ -10,6 +10,6 @@ public interface DocenteRepository extends CrudRepository<Docente,Integer>{
         value = "SELECT * FROM Docente doc WHERE doc.noIdentificacion = ? AND doc.tipoIdentificacion = ?",
         nativeQuery = true
     )
-    public Docente findEstudianteByIdAndTipo(String noIdent, String tipoIdent);
+    public Docente findDocenteByIdAndTipo(String noIdent, String tipoIdent);
 
 }

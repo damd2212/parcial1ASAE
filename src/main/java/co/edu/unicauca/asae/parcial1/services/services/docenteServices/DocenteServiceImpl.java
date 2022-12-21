@@ -1,5 +1,6 @@
 package co.edu.unicauca.asae.parcial1.services.services.docenteServices;
 
+import co.edu.unicauca.asae.parcial1.exceptionControllers.exceptions.EntidadNoExisteException;
 import co.edu.unicauca.asae.parcial1.exceptionControllers.exceptions.EntidadYaExisteException;
 import co.edu.unicauca.asae.parcial1.models.Docente;
 import co.edu.unicauca.asae.parcial1.repositories.DocenteRepository;
@@ -60,7 +61,7 @@ public class DocenteServiceImpl implements IDocenteService{
     }
     @Override
     public ResponseEntity<?> register(DocenteDTO prmDocente) {
-        Docente objDocente = this.servicioAccesoBaseDatos.findEstudianteByIdAndTipo(prmDocente.getNoIdentificacion(), prmDocente.getTipoIdentificacion());
+        Docente objDocente = this.servicioAccesoBaseDatos.findDocenteByIdAndTipo(prmDocente.getNoIdentificacion(), prmDocente.getTipoIdentificacion());
         
         System.out.println("--------------");
         System.out.println(objDocente);
@@ -77,6 +78,20 @@ public class DocenteServiceImpl implements IDocenteService{
         }else{
             return new ResponseEntity<String>("Error al almacenar el docente", HttpStatus.INTERNAL_SERVER_ERROR);
         }
+    }
+
+    @Override
+    public DocenteDTO existeDocenteConTipoYNumeroIdentificacion(String tipoIdentificacion, String noIdentificacion) {
+        
+        DocenteDTO objDocenteDTO=null;
+        Docente objDocenteR=this.servicioAccesoBaseDatos.findDocenteByIdAndTipo(tipoIdentificacion, noIdentificacion);
+        if(objDocenteR==null){
+            EntidadNoExisteException objException = new EntidadNoExisteException("Docente con Tipo Identificacion: "+tipoIdentificacion+" e identificación: "+noIdentificacion+" no existe en la BD");
+            throw objException;
+        }else{
+            objDocenteDTO=this.modelMapper.map(objDocenteR, DocenteDTO.class);
+        }
+        return objDocenteDTO;
     }
 
 }

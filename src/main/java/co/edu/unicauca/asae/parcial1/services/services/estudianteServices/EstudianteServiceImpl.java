@@ -162,7 +162,7 @@ public class EstudianteServiceImpl implements IEstudianteService {
     public ResponseEntity<?> register(EstudianteDTO estudiante) {
 
 
-        Estudiante objEstudiante = this.servicioAccesoBDestudiante.findEstudianteByIdAndTipo(estudiante.getNoIdentificacion(),estudiante.getTipoIdentificacion());
+        Estudiante objEstudiante = this.servicioAccesoBDestudiante.findByTipoDeIdentificacionYnumeroDeIdentificacion(estudiante.getTipoIdentificacion(),estudiante.getNoIdentificacion());
         System.out.println("--------------");
         System.out.println(objEstudiante);
         System.out.println("--------------");

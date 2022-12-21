@@ -11,4 +11,5 @@ public interface IDocenteService {
     public DocenteDTO findById(int prmId);
     public List<DocenteDTO> findAll();
     public ResponseEntity<?> register(DocenteDTO prmDocente);
+    public DocenteDTO existeDocenteConTipoYNumeroIdentificacion(String tipoIdentificacion, String noIdentificacion);
 }
