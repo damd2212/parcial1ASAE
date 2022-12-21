@@ -1,14 +1,8 @@
 package co.edu.unicauca.asae.parcial1.services.services.asignaturaServices;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+
 import java.util.List;
 import java.util.Optional;
-import java.util.function.ObjDoubleConsumer;
-
-import javax.print.Doc;
-import javax.validation.constraints.Null;
-
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +12,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import co.edu.unicauca.asae.parcial1.exceptionControllers.exceptions.ReglaNegocioExcepcion;
+import co.edu.unicauca.asae.parcial1.exceptionControllers.exceptions.EntidadNoExisteException;
 import co.edu.unicauca.asae.parcial1.exceptionControllers.exceptions.EntidadYaExisteException;
 import co.edu.unicauca.asae.parcial1.models.Asignatura;
 import co.edu.unicauca.asae.parcial1.models.Curso;
@@ -26,11 +21,6 @@ import co.edu.unicauca.asae.parcial1.repositories.AsignaturaRepository;
 import co.edu.unicauca.asae.parcial1.repositories.CursoRepository;
 import co.edu.unicauca.asae.parcial1.repositories.DocenteRepository;
 import co.edu.unicauca.asae.parcial1.services.DTO.AsignaturaDTO;
-import co.edu.unicauca.asae.parcial1.services.DTO.CursoDTO;
-import co.edu.unicauca.asae.parcial1.services.services.cursoServices.CursoServiceImpl;
-import co.edu.unicauca.asae.parcial1.services.services.cursoServices.ICursoService;
-import co.edu.unicauca.asae.parcial1.services.services.docenteServices.DocenteServiceImpl;
-import co.edu.unicauca.asae.parcial1.services.services.docenteServices.IDocenteService;
 
 @Service
 public class AsignaturaServiceImpl implements IAsignturaService {
@@ -52,13 +42,19 @@ public class AsignaturaServiceImpl implements IAsignturaService {
     @Autowired
     @Qualifier("mapperbase")
     private ModelMapper modelMapperB;
+    
     @Override
     @Transactional(readOnly = true)
-    public AsignaturaDTO findById(Integer id) {
+    public ResponseEntity<AsignaturaDTO> findById(Integer id) {
         Optional<Asignatura> optional = this.servicioAccesoBaseDatos.findById(id);
         Asignatura asignatura = optional.get();
         AsignaturaDTO asignaturaDTO = this.modelMapper.map(asignatura, AsignaturaDTO.class);
-        return asignaturaDTO;
+        if(asignaturaDTO!=null){
+            return new ResponseEntity<AsignaturaDTO>(asignaturaDTO, HttpStatus.OK);
+        }else{
+            EntidadNoExisteException objNoExisteException = new EntidadNoExisteException("La asignatura con id " + id + " no existe en la base de datos");
+            throw objNoExisteException;
+        }
     }
 
     @Override
@@ -116,6 +112,7 @@ public class AsignaturaServiceImpl implements IAsignturaService {
         }
     }
 
+    /* 
     @Override
     public AsignaturaDTO findByIdPH(Integer id) {
         Optional<Asignatura> optional = this.servicioAccesoBaseDatos.findById(id);
@@ -125,6 +122,7 @@ public class AsignaturaServiceImpl implements IAsignturaService {
         return asignaturaDTO;
 
     }
+    */
 
     @Override
     @Transactional(readOnly = true)

@@ -2,30 +2,19 @@ package co.edu.unicauca.asae.parcial1.services.services.estudianteServices;
 
 import java.util.Collection;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.Optional;
-
-import javax.validation.constraints.Null;
-
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-
-import org.springframework.context.MessageSource;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-
 import co.edu.unicauca.asae.parcial1.exceptionControllers.exceptions.EntidadYaExisteException;
 import co.edu.unicauca.asae.parcial1.exceptionControllers.exceptions.ErrorAlmacenamientoDBException;
 import co.edu.unicauca.asae.parcial1.exceptionControllers.exceptions.ReglaNegocioExcepcion;
-
 import co.edu.unicauca.asae.parcial1.exceptionControllers.exceptions.EntidadNoExisteException;
-
 import co.edu.unicauca.asae.parcial1.models.Direccion;
 import co.edu.unicauca.asae.parcial1.models.Estudiante;
 import co.edu.unicauca.asae.parcial1.models.Telefono;
@@ -65,14 +54,19 @@ public class EstudianteServiceImpl implements IEstudianteService {
     }
 
     @Override
-    public EstudianteDTO findById(Integer idEstudainte) {
+    public ResponseEntity<EstudianteDTO> findById(Integer idEstudainte) {
 
         Optional<Estudiante> optional = this.servicioAccesoBDestudiante.findById(idEstudainte);
 
         Estudiante estudiante = optional.get();
         System.out.println("Antes de consultar los datos");
         EstudianteDTO estudianteDTO = this.estudianteModelMapperpuntof.map(estudiante, EstudianteDTO.class);
-        return estudianteDTO;
+        if(estudianteDTO!=null){
+            return new ResponseEntity<EstudianteDTO>(estudianteDTO, HttpStatus.OK);
+        }else{
+            EntidadNoExisteException objNoExisteException = new EntidadNoExisteException("El estudiante con id " + idEstudainte + " no existe en la base de datos");
+            throw objNoExisteException;
+        }
 
     }
 
@@ -169,7 +163,7 @@ public class EstudianteServiceImpl implements IEstudianteService {
 
     @Override
     @Transactional(readOnly = false)
-    public Boolean delete(Integer id) {
+    public ResponseEntity<Boolean>  delete(Integer id) {
         boolean bandera = false;
         Optional<Estudiante> optional = this.servicioAccesoBDestudiante.findById(id);
         if (!optional.isPresent()) {
@@ -182,7 +176,12 @@ public class EstudianteServiceImpl implements IEstudianteService {
                 bandera = true;
             }
         }
-        return bandera;
+        if(bandera){
+            return new ResponseEntity<Boolean>(bandera, HttpStatus.OK);
+        }else{
+            return new ResponseEntity<Boolean>(bandera, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+       
     }
 
     @Override

@@ -8,7 +8,7 @@ import co.edu.unicauca.asae.parcial1.services.DTO.DocenteDTO;
 
 public interface IDocenteService {
     public ResponseEntity<?> save(DocenteDTO prmDocente);
-    public DocenteDTO findById(int prmId);
+    public ResponseEntity<DocenteDTO> findById(int prmId);
     public List<DocenteDTO> findAll();
     public ResponseEntity<?> register(DocenteDTO prmDocente);
     public DocenteDTO existeDocenteConTipoYNumeroIdentificacion(String tipoIdentificacion, String noIdentificacion);

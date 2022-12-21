@@ -17,18 +17,11 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
-
-
 import co.edu.unicauca.asae.parcial1.exceptionControllers.exceptions.CodigoError;
 import co.edu.unicauca.asae.parcial1.exceptionControllers.exceptions.EntidadNoExisteException;
 import co.edu.unicauca.asae.parcial1.exceptionControllers.exceptions.EntidadYaExisteException;
 import co.edu.unicauca.asae.parcial1.exceptionControllers.exceptions.ErrorUtils;
 import co.edu.unicauca.asae.parcial1.exceptionControllers.exceptions.ReglaNegocioExcepcion;
-
-import co.edu.unicauca.asae.parcial1.exceptionControllers.exceptions.EntidadNoExisteException;
-import co.edu.unicauca.asae.parcial1.exceptionControllers.exceptions.CodigoError;
-import co.edu.unicauca.asae.parcial1.exceptionControllers.exceptions.ErrorUtils;
-
 import co.edu.unicauca.asae.parcial1.exceptionControllers.exceptions.Error;
 import co.edu.unicauca.asae.parcial1.exceptionControllers.exceptions.ErrorAlmacenamientoDBException;
 

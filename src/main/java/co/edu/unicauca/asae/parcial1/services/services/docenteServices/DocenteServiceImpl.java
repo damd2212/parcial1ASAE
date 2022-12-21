@@ -44,13 +44,16 @@ public class DocenteServiceImpl implements IDocenteService{
 
     @Override
     @Transactional
-    public DocenteDTO findById(int prmId){
+    public ResponseEntity<DocenteDTO> findById(int prmId){
         Optional<Docente> objDocente=this.servicioAccesoBaseDatos.findById(prmId);
         DocenteDTO objDocenteDTO=null;
         if(objDocente.isPresent()){
             objDocenteDTO=this.modelMapper.map(objDocente.get(),DocenteDTO.class);
+        }else{
+            EntidadNoExisteException objNoExisteException = new EntidadNoExisteException("El docente con id " + prmId + " no existe en la base de datos");
+            throw objNoExisteException;
         }
-        return objDocenteDTO;
+        return new ResponseEntity<DocenteDTO>(objDocenteDTO, HttpStatus.OK);
     }
     @Override
     @Transactional

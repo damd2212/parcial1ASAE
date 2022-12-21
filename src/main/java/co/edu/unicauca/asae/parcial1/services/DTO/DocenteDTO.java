@@ -1,13 +1,9 @@
 package co.edu.unicauca.asae.parcial1.services.DTO;
 
 import java.util.List;
-
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
-
 import lombok.Getter;
 import lombok.Setter;
 

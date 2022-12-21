@@ -2,12 +2,9 @@ package co.edu.unicauca.asae.parcial1.repositories;
 
 import java.util.Collection;
 import java.util.List;
-
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
-
-import co.edu.unicauca.asae.parcial1.models.Docente;
 import co.edu.unicauca.asae.parcial1.models.Estudiante;
 
 public interface EstudianteRepository extends CrudRepository<Estudiante, Integer>{
