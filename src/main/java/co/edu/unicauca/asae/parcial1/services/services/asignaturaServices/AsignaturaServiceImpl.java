@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import co.edu.unicauca.asae.parcial1.exceptionControllers.exceptions.EntidadYaExisteException;
 import co.edu.unicauca.asae.parcial1.models.Asignatura;
 import co.edu.unicauca.asae.parcial1.models.Curso;
 import co.edu.unicauca.asae.parcial1.models.Docente;
@@ -63,6 +64,13 @@ public class AsignaturaServiceImpl implements IAsignturaService {
     @Override
     @Transactional()
     public ResponseEntity<?> save(AsignaturaDTO prmAsignatura) {
+        if(prmAsignatura.getIdAsignatura()!=null){
+            Optional<Asignatura> optional = this.servicioAccesoBaseDatos.findById(prmAsignatura.getIdAsignatura());
+            if(optional.isPresent()){
+                EntidadYaExisteException exception = new EntidadYaExisteException("Asignatura con id "+prmAsignatura.getIdAsignatura()+" ya existe en la BD");
+                throw exception;
+            }
+        }
         Asignatura objAsignatura = this.modelMapperB.map(prmAsignatura, Asignatura.class);
         for (int i=0;i<objAsignatura.getListaCursos().size();i++) {
             if(objAsignatura.getListaCursos().get(i).getIdCurso()!=null){
@@ -78,7 +86,6 @@ public class AsignaturaServiceImpl implements IAsignturaService {
             }else{
                 objAsignatura.getListaCursos().get(i).setObjAsignatura(objAsignatura);
             }
-            
         }
          for(int i=0;i<objAsignatura.getListaDocentes().size();i++){
             if(objAsignatura.getListaDocentes().get(i).getIdPersona()!=null){

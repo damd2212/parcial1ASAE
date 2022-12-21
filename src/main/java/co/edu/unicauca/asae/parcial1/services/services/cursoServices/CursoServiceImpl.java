@@ -11,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
+import co.edu.unicauca.asae.parcial1.exceptionControllers.exceptions.EntidadNoExisteException;
+import co.edu.unicauca.asae.parcial1.exceptionControllers.exceptions.EntidadYaExisteException;
 import co.edu.unicauca.asae.parcial1.models.Asignatura;
 import co.edu.unicauca.asae.parcial1.models.Curso;
 import co.edu.unicauca.asae.parcial1.repositories.AsignaturaRepository;
@@ -38,6 +40,18 @@ public class CursoServiceImpl implements ICursoService{
     @Override
     @Transactional()
     public ResponseEntity<?> save(CursoDTO prmCurso, int id_asignatura) {
+        if(prmCurso.getIdCurso()!=null){
+            Optional<Curso> optionalc = this.servicioAccesoBaseDatos.findById(prmCurso.getIdCurso());
+            if(optionalc.isPresent()){
+                EntidadNoExisteException exception = new EntidadNoExisteException("Curso con id "+prmCurso.getIdCurso()+" ya existe en la BD");
+                throw exception;
+            }
+        }
+        Optional<Asignatura> optionala = this.servicioAccesoBaseDatosAsig.findById(id_asignatura);
+        if(optionala.isPresent()==false){
+            EntidadYaExisteException exception = new EntidadYaExisteException("Asignatura con id "+prmCurso.getIdCurso()+" no existe en la BD");
+            throw exception;
+        }
         CursoDTO objCursoDTO = null;
         Optional<Asignatura> optional = this.servicioAccesoBaseDatosAsig.findById(id_asignatura);
         Optional<Curso> optional2 = this.servicioAccesoBaseDatos.findById(prmCurso.getIdCurso());
