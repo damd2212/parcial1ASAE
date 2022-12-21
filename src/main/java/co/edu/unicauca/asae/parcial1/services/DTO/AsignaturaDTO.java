@@ -20,10 +20,10 @@ public class AsignaturaDTO {
     @Size(min=5,max = 25,message = "{asignatura.nombre.size}")
     private String nombre;
 
-    @Size(min = 2,message = "{asignatura.listaDocentes.size}")    
+    //@Size(min = 2,message = "{asignatura.listaDocentes.size}")    
     private List<DocenteDTO> listaDocentes;
 
-    @Size(min=1,message = "{asignatura.listaCursos.size}")
+    //@Size(min=1,message = "{asignatura.listaCursos.size}")
     private List<CursoDTO> listaCursos;
 
 }

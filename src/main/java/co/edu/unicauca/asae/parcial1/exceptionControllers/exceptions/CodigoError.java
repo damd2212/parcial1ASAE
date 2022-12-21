@@ -11,8 +11,9 @@ public enum CodigoError {
         ERROR_GENERICO("GC-0001", "ERROR GENERICO"),
         ENTIDAD_YA_EXISTE("GC-0002", "ERROR ENTIDAD YA EXISTE"),
         ENTIDAD_NO_ENCONTRADA("GC-0008", "Recurso no encontrado"),
-        VIOLACION_REGLA_DE_NEGOCIO("GC-0004", "Regla de negocio violada");
-        
+        VIOLACION_REGLA_DE_NEGOCIO("GC-0004", "Regla de negocio violada"),
+		VIOLACION_ALMACENAMIENTO_DB("GC-0005","Almacenamiento violado");
+	
         private final String codigo;
         private final String llaveMensaje;
 
