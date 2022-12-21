@@ -60,7 +60,7 @@ public class DocenteServiceImpl implements IDocenteService{
     }
     @Override
     public ResponseEntity<?> register(DocenteDTO prmDocente) {
-        Docente objDocente = this.servicioAccesoBaseDatos.findEstudianteByIdAndTipo(prmDocente.getNoIdentificacion(), prmDocente.getTipoIdentificacion());
+        Docente objDocente = this.servicioAccesoBaseDatos.findDocenteByIdAndTipo(prmDocente.getNoIdentificacion(), prmDocente.getTipoIdentificacion());
         
         System.out.println("--------------");
         System.out.println(objDocente);
