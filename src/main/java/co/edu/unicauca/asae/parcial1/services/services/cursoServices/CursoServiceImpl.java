@@ -43,13 +43,13 @@ public class CursoServiceImpl implements ICursoService{
         if(prmCurso.getIdCurso()!=null){
             Optional<Curso> optionalc = this.servicioAccesoBaseDatos.findById(prmCurso.getIdCurso());
             if(optionalc.isPresent()){
-                EntidadNoExisteException exception = new EntidadNoExisteException("Curso con id "+prmCurso.getIdCurso()+" ya existe en la BD");
+                EntidadYaExisteException exception = new EntidadYaExisteException("Curso con id "+prmCurso.getIdCurso()+" ya existe en la BD");
                 throw exception;
             }
         }
         Optional<Asignatura> optionala = this.servicioAccesoBaseDatosAsig.findById(id_asignatura);
         if(optionala.isPresent()==false){
-            EntidadYaExisteException exception = new EntidadYaExisteException("Asignatura con id "+prmCurso.getIdCurso()+" no existe en la BD");
+            EntidadNoExisteException exception = new EntidadNoExisteException("Asignatura con id "+prmCurso.getIdCurso()+" no existe en la BD");
             throw exception;
         }
         CursoDTO objCursoDTO = null;
