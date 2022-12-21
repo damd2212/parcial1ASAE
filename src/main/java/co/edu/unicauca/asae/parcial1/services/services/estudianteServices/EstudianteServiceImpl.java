@@ -79,6 +79,20 @@ public class EstudianteServiceImpl implements IEstudianteService {
     @Override
     @Transactional(readOnly = false)
     public ResponseEntity<EstudianteDTO> update(Integer id, EstudianteDTO estudiante) {
+
+        Optional<Estudiante> optional = this.servicioAccesoBDestudiante.findById(id);
+        if (!optional.isPresent()) {
+            EntidadNoExisteException objNoExisteException = new EntidadNoExisteException("El estudiante con id " + id + " no existe en la base de datos");
+            throw objNoExisteException;
+        }
+
+        Estudiante objEstudiante = this.servicioAccesoBDestudiante.findByTipoDeIdentificacionYnumeroDeIdentificacion(estudiante.getTipoIdentificacion(),estudiante.getNoIdentificacion());
+        if (objEstudiante != null) {
+            if (objEstudiante.getIdPersona() != id) {
+                EntidadYaExisteException objException = new EntidadYaExisteException("Estudiante con identificacion: " + estudiante.getNoIdentificacion() + " de tipo " + estudiante.getTipoIdentificacion() +" ya existe en la base de datos");
+                throw objException;
+            }
+        }
     	
     	Estudiante objEstudiante2 = this.servicioAccesoBDestudiante.findByCorreoElectronico(estudiante.getCorreoElectronico());
         if(objEstudiante2 != null) {
@@ -88,44 +102,47 @@ public class EstudianteServiceImpl implements IEstudianteService {
         	}
         }
         
-        Optional<Estudiante> optional = this.servicioAccesoBDestudiante.findById(id);
         EstudianteDTO estudianteDTOActualizado = null;
+        if (estudiante.getObjDireccion() != null) {
+            if (estudiante.getListaTelefonos().size()>=2) {
 
-        if (optional.isPresent()) {
-            Estudiante objEstudianteAlmacenado = optional.get();
-            objEstudianteAlmacenado.setIdPersona(estudiante.getIdPersona());
-            objEstudianteAlmacenado.setNombres(estudiante.getNombres());
-            objEstudianteAlmacenado.setApellidos(estudiante.getApellidos());
-            objEstudianteAlmacenado.setNoIdentificacion(estudiante.getNoIdentificacion());
-            objEstudianteAlmacenado.setFechaIngreso(estudiante.getFechaIngreso());
-            objEstudianteAlmacenado.setTipoIdentificacion(estudiante.getTipoIdentificacion());
-            objEstudianteAlmacenado.setCorreoElectronico(estudiante.getCorreoElectronico());
-            Direccion objDireccionAlmacenada = objEstudianteAlmacenado.getObjDireccion();
-            objDireccionAlmacenada.setIdEstudiante(estudiante.getObjDireccion().getIdEstudiante());
-            objDireccionAlmacenada.setCiudad(estudiante.getObjDireccion().getCiudad());
-            objDireccionAlmacenada.setDireccionResidencia(estudiante.getObjDireccion().getDireccionResidencia());
-            objDireccionAlmacenada.setPais(estudiante.getObjDireccion().getPais());
-            List<TelefonoDTO> listaTelefonosNuevos = estudiante.getListaTelefonos();
-            List<Telefono> listaTelefonosAlmacenados = objEstudianteAlmacenado.getListaTelefonos();
-            Integer index = 0;
-            for (TelefonoDTO telefono : listaTelefonosNuevos) {
-                index = existe(listaTelefonosAlmacenados, telefono.getIdTelefono());
-                if (index != -1) {
-                    listaTelefonosAlmacenados.get(index).setIdTelefono(telefono.getIdTelefono());
-                    listaTelefonosAlmacenados.get(index).setNumero(telefono.getNumero());
-                    listaTelefonosAlmacenados.get(index).setTipo(telefono.getTipo());
+                Estudiante objEstudianteAlmacenado = optional.get();
+                objEstudianteAlmacenado.setIdPersona(estudiante.getIdPersona());
+                objEstudianteAlmacenado.setNombres(estudiante.getNombres());
+                objEstudianteAlmacenado.setApellidos(estudiante.getApellidos());
+                objEstudianteAlmacenado.setNoIdentificacion(estudiante.getNoIdentificacion());
+                objEstudianteAlmacenado.setFechaIngreso(estudiante.getFechaIngreso());
+                objEstudianteAlmacenado.setTipoIdentificacion(estudiante.getTipoIdentificacion());
+                objEstudianteAlmacenado.setCorreoElectronico(estudiante.getCorreoElectronico());
+                Direccion objDireccionAlmacenada = objEstudianteAlmacenado.getObjDireccion();
+                objDireccionAlmacenada.setIdEstudiante(estudiante.getObjDireccion().getIdEstudiante());
+                objDireccionAlmacenada.setCiudad(estudiante.getObjDireccion().getCiudad());
+                objDireccionAlmacenada.setDireccionResidencia(estudiante.getObjDireccion().getDireccionResidencia());
+                objDireccionAlmacenada.setPais(estudiante.getObjDireccion().getPais());
+                List<TelefonoDTO> listaTelefonosNuevos = estudiante.getListaTelefonos();
+                List<Telefono> listaTelefonosAlmacenados = objEstudianteAlmacenado.getListaTelefonos();
+                Integer index = 0;
+                for (TelefonoDTO telefono : listaTelefonosNuevos) {
+                    index = existe(listaTelefonosAlmacenados, telefono.getIdTelefono());
+                    if (index != -1) {
+                        listaTelefonosAlmacenados.get(index).setIdTelefono(telefono.getIdTelefono());
+                        listaTelefonosAlmacenados.get(index).setNumero(telefono.getNumero());
+                        listaTelefonosAlmacenados.get(index).setTipo(telefono.getTipo());
+                    }
                 }
+                Estudiante estudianteActualizado = this.servicioAccesoBDestudiante.save(objEstudianteAlmacenado);
+                estudianteDTOActualizado = this.estudianteModelMapperpuntof.map(estudianteActualizado, EstudianteDTO.class);
+                
+            }else{
+                ReglaNegocioExcepcion objReglaNegocioExcepciontel = new ReglaNegocioExcepcion("Al actualizar un estudiante debe tener como minimo dos telefonos");
+                throw objReglaNegocioExcepciontel;
             }
-            Estudiante estudianteActualizado = this.servicioAccesoBDestudiante.save(objEstudianteAlmacenado);
-            estudianteDTOActualizado = this.estudianteModelMapperpuntof.map(estudianteActualizado, EstudianteDTO.class);
         }else{
-            return new ResponseEntity<EstudianteDTO>(estudianteDTOActualizado, HttpStatus.NOT_FOUND);
+            ReglaNegocioExcepcion objReglaNegocioExcepcion = new ReglaNegocioExcepcion("Al actualizar un estudiante la direccion no puede ser nula");
+            throw objReglaNegocioExcepcion;
         }
-        if(estudianteDTOActualizado!=null){
-            return new ResponseEntity<EstudianteDTO>(estudianteDTOActualizado, HttpStatus.OK);
-        }else{
-            return new ResponseEntity<EstudianteDTO>(estudianteDTOActualizado, HttpStatus.INTERNAL_SERVER_ERROR);
-        }
+        
+        return new ResponseEntity<EstudianteDTO>(estudianteDTOActualizado, HttpStatus.OK);
         
     }
 
@@ -176,6 +193,7 @@ public class EstudianteServiceImpl implements IEstudianteService {
         System.out.println("--------------");
         System.out.println(objEstudiante);
         System.out.println("--------------");
+
         if (objEstudiante != null) {
             EntidadYaExisteException objException = new EntidadYaExisteException("Estudiante con identificacion: " + estudiante.getNoIdentificacion() + " de tipo " + estudiante.getTipoIdentificacion() +" ya existe en la base de datos");
             throw objException;
