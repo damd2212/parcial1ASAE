@@ -130,13 +130,12 @@ public class AsignaturaServiceImpl implements IAsignturaService {
     public ResponseEntity<?> buscarPorNombre(String nombre) {
         
         List<Asignatura> asignaturas = this.servicioAccesoBaseDatos.findByNombreIgnoreCaseContainingOrderByNombreAsc(nombre);
-        List<AsignaturaDTO> asinaturasDTO = new ArrayList<>();
         if (!asignaturas.isEmpty()) {
-            asinaturasDTO = this.modelMapperB.map(asignaturas, new TypeToken<List<AsignaturaDTO>>() {}.getType());    
+            List<AsignaturaDTO>asinaturasDTO = this.modelMapperB.map(asignaturas, new TypeToken<List<AsignaturaDTO>>() {}.getType());    
             return new ResponseEntity<List<AsignaturaDTO>>(asinaturasDTO,HttpStatus.OK);
 
         } 
-        return new ResponseEntity<List<AsignaturaDTO>>(asinaturasDTO, HttpStatus.NO_CONTENT);
+        return new ResponseEntity<String>("No se encontraron asignaturas con el nombre " + nombre, HttpStatus.NO_CONTENT);
         
     }
 
