@@ -56,4 +56,10 @@ public class DocenteRestController {
 
 		return errors;
 	}
+
+	@PostMapping("/docentes/val")
+    public ResponseEntity<?> register(@Valid @RequestBody DocenteDTO docente) {
+        ResponseEntity<?> objRespuesta = this.docenteService.register(docente);
+    	return objRespuesta;
+    }
 }

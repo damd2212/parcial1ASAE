@@ -1,5 +1,7 @@
 package co.edu.unicauca.asae.parcial1.services.services.docenteServices;
 
+import co.edu.unicauca.asae.parcial1.exceptionControllers.exceptions.EntidadNoExisteException;
+import co.edu.unicauca.asae.parcial1.exceptionControllers.exceptions.EntidadYaExisteException;
 import co.edu.unicauca.asae.parcial1.models.Docente;
 import co.edu.unicauca.asae.parcial1.repositories.DocenteRepository;
 import co.edu.unicauca.asae.parcial1.services.DTO.DocenteDTO;
@@ -56,6 +58,40 @@ public class DocenteServiceImpl implements IDocenteService{
         Iterable<Docente> obj=this.servicioAccesoBaseDatos.findAll();
         List<DocenteDTO> rta=this.modelMapper.map(obj, new TypeToken<List<DocenteDTO>>(){}.getType());
         return rta;
+    }
+    @Override
+    public ResponseEntity<?> register(DocenteDTO prmDocente) {
+        Docente objDocente = this.servicioAccesoBaseDatos.findDocenteByIdAndTipo(prmDocente.getNoIdentificacion(), prmDocente.getTipoIdentificacion());
+        
+        System.out.println("--------------");
+        System.out.println(objDocente);
+        System.out.println("--------------");
+        if (objDocente != null) {
+            EntidadYaExisteException objException = new EntidadYaExisteException("Docente con identificacion: " + prmDocente.getNoIdentificacion() + " de tipo " + prmDocente.getTipoIdentificacion() +" ya existe en la base de datos");
+            throw objException;
+        }
+        Docente objDocenteRetorno=this.modelMapper.map(prmDocente, Docente.class);
+        Docente objDocenteRespuesta=this.servicioAccesoBaseDatos.save(objDocenteRetorno);
+        DocenteDTO objDocenteDTO=this.modelMapper.map(objDocenteRespuesta, DocenteDTO.class);
+        if(objDocenteDTO!=null){
+            return new ResponseEntity<DocenteDTO>(objDocenteDTO, HttpStatus.CREATED);
+        }else{
+            return new ResponseEntity<String>("Error al almacenar el docente", HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    public DocenteDTO existeDocenteConTipoYNumeroIdentificacion(String tipoIdentificacion, String noIdentificacion) {
+        
+        DocenteDTO objDocenteDTO=null;
+        Docente objDocenteR=this.servicioAccesoBaseDatos.findDocenteByIdAndTipo(tipoIdentificacion, noIdentificacion);
+        if(objDocenteR==null){
+            EntidadNoExisteException objException = new EntidadNoExisteException("Docente con Tipo Identificacion: "+tipoIdentificacion+" e identificación: "+noIdentificacion+" no existe en la BD");
+            throw objException;
+        }else{
+            objDocenteDTO=this.modelMapper.map(objDocenteR, DocenteDTO.class);
+        }
+        return objDocenteDTO;
     }
 
 }
