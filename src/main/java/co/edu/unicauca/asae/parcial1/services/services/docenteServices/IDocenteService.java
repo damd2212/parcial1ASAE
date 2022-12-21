@@ -10,4 +10,5 @@ public interface IDocenteService {
     public ResponseEntity<?> save(DocenteDTO prmDocente);
     public DocenteDTO findById(int prmId);
     public List<DocenteDTO> findAll();
+    public ResponseEntity<?> register(DocenteDTO prmDocente);
 }

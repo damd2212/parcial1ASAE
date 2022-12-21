@@ -58,8 +58,8 @@ public class DocenteRestController {
 	}
 
 	@PostMapping("/docentes/val")
-    public ResponseEntity<?> register(@Valid @RequestBody DocenteDTO estudiante) {
-        //ResponseEntity<?> objRespuesta = this.docenteService.register(estudiante);
-    	return null;
+    public ResponseEntity<?> register(@Valid @RequestBody DocenteDTO docente) {
+        ResponseEntity<?> objRespuesta = this.docenteService.register(docente);
+    	return objRespuesta;
     }
 }
