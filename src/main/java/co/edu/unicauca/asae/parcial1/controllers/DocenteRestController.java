@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -61,5 +62,12 @@ public class DocenteRestController {
     public ResponseEntity<?> register(@Valid @RequestBody DocenteDTO docente) {
         ResponseEntity<?> objRespuesta = this.docenteService.register(docente);
     	return objRespuesta;
+    }
+
+	@GetMapping("/docentes/exist")
+    public ResponseEntity<?> exist(@RequestParam String tipoIdentificacion, @RequestParam String noIdentificacion) {
+        DocenteDTO objDocente = this.docenteService.existeDocenteConTipoYNumeroIdentificacion(tipoIdentificacion, noIdentificacion); 
+        ResponseEntity<DocenteDTO> objRespuesta = new ResponseEntity<DocenteDTO>(objDocente, HttpStatus.OK);
+        return objRespuesta;
     }
 }

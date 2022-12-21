@@ -82,9 +82,9 @@ public class DocenteServiceImpl implements IDocenteService{
 
     @Override
     public DocenteDTO existeDocenteConTipoYNumeroIdentificacion(String tipoIdentificacion, String noIdentificacion) {
-        
+
         DocenteDTO objDocenteDTO=null;
-        Docente objDocenteR=this.servicioAccesoBaseDatos.findDocenteByIdAndTipo(tipoIdentificacion, noIdentificacion);
+        Docente objDocenteR=this.servicioAccesoBaseDatos.findDocenteByIdAndTipo(noIdentificacion,tipoIdentificacion);
         if(objDocenteR==null){
             EntidadNoExisteException objException = new EntidadNoExisteException("Docente con Tipo Identificacion: "+tipoIdentificacion+" e identificación: "+noIdentificacion+" no existe en la BD");
             throw objException;
