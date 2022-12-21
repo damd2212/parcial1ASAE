@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 import co.edu.unicauca.asae.parcial1.exceptionControllers.exceptions.EntidadYaExisteException;
+import co.edu.unicauca.asae.parcial1.exceptionControllers.exceptions.ErrorAlmacenamientoDBException;
 import co.edu.unicauca.asae.parcial1.exceptionControllers.exceptions.ReglaNegocioExcepcion;
 
 import co.edu.unicauca.asae.parcial1.exceptionControllers.exceptions.EntidadNoExisteException;
@@ -78,6 +79,15 @@ public class EstudianteServiceImpl implements IEstudianteService {
     @Override
     @Transactional(readOnly = false)
     public ResponseEntity<EstudianteDTO> update(Integer id, EstudianteDTO estudiante) {
+    	
+    	Estudiante objEstudiante2 = this.servicioAccesoBDestudiante.findByCorreoElectronico(estudiante.getCorreoElectronico());
+        if(objEstudiante2 != null) {
+        	if(objEstudiante2.getIdPersona() != estudiante.getIdPersona()) {
+        		ErrorAlmacenamientoDBException objException = new ErrorAlmacenamientoDBException("Estudiante con correo: " + estudiante.getCorreoElectronico() + " ya ha sido registrado");
+            	throw objException;
+        	}
+        }
+        
         Optional<Estudiante> optional = this.servicioAccesoBDestudiante.findById(id);
         EstudianteDTO estudianteDTOActualizado = null;
 
@@ -171,6 +181,11 @@ public class EstudianteServiceImpl implements IEstudianteService {
             throw objException;
         }
         
+        Estudiante objEstudiante2 = this.servicioAccesoBDestudiante.findByCorreoElectronico(estudiante.getCorreoElectronico());
+        if(objEstudiante2 != null) {
+        	ErrorAlmacenamientoDBException objException2 = new ErrorAlmacenamientoDBException("Estudiante con correo: " + estudiante.getCorreoElectronico() + " ya ha sido registrado");
+        	throw objException2;
+        }
         
         Estudiante estudianteEntity = this.estudianteModelMapperpuntof.map(estudiante, Estudiante.class);
 

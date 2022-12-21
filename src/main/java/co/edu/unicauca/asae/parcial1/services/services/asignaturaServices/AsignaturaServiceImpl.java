@@ -18,6 +18,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import co.edu.unicauca.asae.parcial1.exceptionControllers.exceptions.ReglaNegocioExcepcion;
 import co.edu.unicauca.asae.parcial1.models.Asignatura;
 import co.edu.unicauca.asae.parcial1.models.Curso;
 import co.edu.unicauca.asae.parcial1.models.Docente;
@@ -63,6 +64,12 @@ public class AsignaturaServiceImpl implements IAsignturaService {
     @Override
     @Transactional()
     public ResponseEntity<?> save(AsignaturaDTO prmAsignatura) {
+    	
+    	if(prmAsignatura.getListaCursos().size() < 1 || prmAsignatura.getListaDocentes().size() < 1) {
+    		ReglaNegocioExcepcion objReglaNegocioExcepcion = new ReglaNegocioExcepcion("Al registrar una asignatura debe estar asociada mínimo a un curso y un docente");
+            throw objReglaNegocioExcepcion;
+        }
+    	
         Asignatura objAsignatura = this.modelMapperB.map(prmAsignatura, Asignatura.class);
         for (int i=0;i<objAsignatura.getListaCursos().size();i++) {
             if(objAsignatura.getListaCursos().get(i).getIdCurso()!=null){

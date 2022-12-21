@@ -30,6 +30,7 @@ import co.edu.unicauca.asae.parcial1.exceptionControllers.exceptions.CodigoError
 import co.edu.unicauca.asae.parcial1.exceptionControllers.exceptions.ErrorUtils;
 
 import co.edu.unicauca.asae.parcial1.exceptionControllers.exceptions.Error;
+import co.edu.unicauca.asae.parcial1.exceptionControllers.exceptions.ErrorAlmacenamientoDBException;
 
 @ControllerAdvice
 public class RestApiExceptionHandler {
@@ -43,6 +44,18 @@ public class RestApiExceptionHandler {
                                             HttpStatus.INTERNAL_SERVER_ERROR.value())
                             .setUrl(req.getRequestURL().toString()).setMetodo(req.getMethod());
             return new ResponseEntity<>(error, HttpStatus.INTERNAL_SERVER_ERROR);
+    }
+    
+    @ExceptionHandler(ErrorAlmacenamientoDBException.class)
+    public ResponseEntity<Error> handleGenericException(final HttpServletRequest req,
+                    final ErrorAlmacenamientoDBException ex, final Locale locale) {
+            final Error error = ErrorUtils
+                            .crearError(CodigoError.VIOLACION_ALMACENAMIENTO_DB.getCodigo(),
+                                            String.format("%s, %s", CodigoError.VIOLACION_ALMACENAMIENTO_DB.getLlaveMensaje(),
+                                                            ex.getMessage()),
+                                            HttpStatus.NOT_ACCEPTABLE.value())
+                            .setUrl(req.getRequestURL().toString()).setMetodo(req.getMethod());
+            return new ResponseEntity<>(error, HttpStatus.NOT_ACCEPTABLE);
     }
 
     @ExceptionHandler(EntidadYaExisteException.class)
