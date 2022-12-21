@@ -48,7 +48,7 @@ public class AsignaturaServiceImpl implements IAsignturaService {
     public ResponseEntity<AsignaturaDTO> findById(Integer id) {
         Optional<Asignatura> optional = this.servicioAccesoBaseDatos.findById(id);
         Asignatura asignatura = optional.get();
-        AsignaturaDTO asignaturaDTO = this.modelMapper.map(asignatura, AsignaturaDTO.class);
+        AsignaturaDTO asignaturaDTO = this.modelMapperB.map(asignatura, AsignaturaDTO.class);
         if(asignaturaDTO!=null){
             return new ResponseEntity<AsignaturaDTO>(asignaturaDTO, HttpStatus.OK);
         }else{
