@@ -37,7 +37,7 @@ public class Asignatura {
 
     //Preguntar si el fetch es EAGER o no
     @JsonBackReference
-    @ManyToMany(cascade = {CascadeType.PERSIST},fetch = FetchType.LAZY)
+    @ManyToMany(cascade = {CascadeType.PERSIST},fetch = FetchType.EAGER)
     @JoinTable(name = "Docentes_Asignaturas",
                joinColumns = @JoinColumn(name = "idAsignatura"),
                inverseJoinColumns = @JoinColumn(name = "idDocente")
@@ -46,7 +46,7 @@ public class Asignatura {
 
     //Preguntar si el fetch es EAGER o no
     //Para el punto H el fetch es tipo EAGER por ende en la lista de docentes lo cambie a LAZY
-    @OneToMany(cascade = {CascadeType.PERSIST,CascadeType.REMOVE},fetch = FetchType.EAGER, mappedBy = "objAsignatura")
+    @OneToMany(cascade = {CascadeType.PERSIST,CascadeType.REMOVE},fetch = FetchType.LAZY, mappedBy = "objAsignatura")
     private List<Curso> listaCursos;
 
 }

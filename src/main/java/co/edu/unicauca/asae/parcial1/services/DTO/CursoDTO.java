@@ -21,4 +21,6 @@ public class CursoDTO {
     @Min(value=1,message = "{curso.periodo.size}")
     @Max(value=2,message = "{curso.periodo.size}")
     private Integer periodo;
+    
+    private AsignaturaDTO objAsignatura;
 }
