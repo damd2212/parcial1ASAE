@@ -1,10 +1,12 @@
 package co.edu.unicauca.asae.parcial1.services.services.cursoServices;
 
+import java.util.List;
 import java.util.Optional;
 
 import javax.transaction.Transactional;
 
 import org.modelmapper.ModelMapper;
+import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpStatus;
@@ -17,6 +19,7 @@ import co.edu.unicauca.asae.parcial1.models.Asignatura;
 import co.edu.unicauca.asae.parcial1.models.Curso;
 import co.edu.unicauca.asae.parcial1.repositories.AsignaturaRepository;
 import co.edu.unicauca.asae.parcial1.repositories.CursoRepository;
+import co.edu.unicauca.asae.parcial1.services.DTO.AsignaturaDTO;
 import co.edu.unicauca.asae.parcial1.services.DTO.CursoDTO;
 
 @Service
@@ -70,12 +73,25 @@ public class CursoServiceImpl implements ICursoService{
 
     @Override
     @Transactional
-    public CursoDTO findById(String prmId){
+    public ResponseEntity<?> findById(String prmId){
         Optional<Curso> objCurso=this.servicioAccesoBaseDatos.findById(prmId);
         CursoDTO objCursoDTO=null;
         if(objCurso.isPresent()){
+            System.out.println(objCurso.get().getObjAsignatura().getNombre());
             objCursoDTO=this.modelMapper.map(objCurso.get(),CursoDTO.class);
+            
+        }else{
+            EntidadNoExisteException objNoExisteException = new EntidadNoExisteException("El curso con id " + prmId + " no existe en la base de datos");
+            throw objNoExisteException;
         }
-        return objCursoDTO;
+        return new ResponseEntity<CursoDTO>(objCursoDTO, HttpStatus.OK);
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<List<CursoDTO>> findAll(){
+        Iterable<Curso> obj=this.servicioAccesoBaseDatos.findAll();
+        List<CursoDTO> rta=this.modelMapper.map(obj, new TypeToken<List<CursoDTO>>(){}.getType());   
+        return new ResponseEntity<List<CursoDTO>>(rta, HttpStatus.OK);
     }
 }
