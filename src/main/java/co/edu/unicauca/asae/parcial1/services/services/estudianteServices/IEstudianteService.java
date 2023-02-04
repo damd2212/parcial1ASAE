@@ -10,6 +10,8 @@ import org.springframework.http.ResponseEntity;
 import co.edu.unicauca.asae.parcial1.services.DTO.EstudianteDTO;
 
 public interface IEstudianteService {
+
+    public ResponseEntity<List<EstudianteDTO>> findAll();
 	
 	public ResponseEntity<?> save(EstudianteDTO estudiante);
 	

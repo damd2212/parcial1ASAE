@@ -104,4 +104,10 @@ public class EstudianteRestController {
         ResponseEntity<List<EstudianteDTO>> response =  this.estudianteService.findByIdEnConjunto(conjuntoIds);
         return response;
     }
+
+    @GetMapping("/estudiantes/todos")
+    public ResponseEntity<List<EstudianteDTO>> findAll(){
+        ResponseEntity<List<EstudianteDTO>> response = this.estudianteService.findAll();
+        return response;
+    }
 }

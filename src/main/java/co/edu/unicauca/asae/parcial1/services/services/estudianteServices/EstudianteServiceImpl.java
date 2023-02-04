@@ -265,4 +265,14 @@ public class EstudianteServiceImpl implements IEstudianteService {
 
     }
 
+    @Override
+    public ResponseEntity<List<EstudianteDTO>> findAll() {
+        Iterable<Estudiante> estudiantes = this.servicioAccesoBDestudiante.findAll();
+        List<EstudianteDTO> estudiantesDTO = this.estudianteModelMapperpuntof.map(estudiantes,new TypeToken<List<EstudianteDTO>>(){}.getType());
+        if(estudiantesDTO.size() <= 0){
+            return new ResponseEntity<List<EstudianteDTO>>(estudiantesDTO,HttpStatus.NO_CONTENT);
+        }
+        return new ResponseEntity<List<EstudianteDTO>>(estudiantesDTO,HttpStatus.OK);
+    }
+
 }
