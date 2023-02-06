@@ -19,7 +19,6 @@ import co.edu.unicauca.asae.parcial1.models.Asignatura;
 import co.edu.unicauca.asae.parcial1.models.Curso;
 import co.edu.unicauca.asae.parcial1.repositories.AsignaturaRepository;
 import co.edu.unicauca.asae.parcial1.repositories.CursoRepository;
-import co.edu.unicauca.asae.parcial1.services.DTO.AsignaturaDTO;
 import co.edu.unicauca.asae.parcial1.services.DTO.CursoDTO;
 
 @Service
