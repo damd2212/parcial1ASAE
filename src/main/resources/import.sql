@@ -2,6 +2,16 @@ INSERT INTO `docente` (`noIdentificacion`, `tipoIdentificacion`, `nombres`,`apel
 INSERT INTO `docente` (`noIdentificacion`, `tipoIdentificacion`, `nombres`,`apellidos`,`universidad`,`tipoDocente`,`salario`) VALUES ('5464', 'Cedula', 'Juan','Perez','Unicauca','Planta',1200000.0);
 
 INSERT INTO `asignaturas` (`nombre`) VALUES ('Sistemas distribuidos');
+INSERT INTO `asignaturas` (`nombre`) VALUES ('Sistemas operativos');
+INSERT INTO `asignaturas` (`nombre`) VALUES ('Calculo I');
+INSERT INTO `asignaturas` (`nombre`) VALUES ('Calculo II');
+INSERT INTO `asignaturas` (`nombre`) VALUES ('Mecanica');
+INSERT INTO `asignaturas` (`nombre`) VALUES ('Ing. Software I');
+INSERT INTO `asignaturas` (`nombre`) VALUES ('Ing. Software II');
+INSERT INTO `asignaturas` (`nombre`) VALUES ('Ing. Software III');
+INSERT INTO `asignaturas` (`nombre`) VALUES ('Intro a la Ing Sistemas');
+
+
 
 INSERT INTO `cursos` (`idCurso`,`nombre`,`periodo`,`idAsignatura`) VALUES ('100',"Grupo A",2,1);
 INSERT INTO `cursos` (`idCurso`,`nombre`,`periodo`,`idAsignatura`) VALUES ('101',"Grupo B",2,1);
