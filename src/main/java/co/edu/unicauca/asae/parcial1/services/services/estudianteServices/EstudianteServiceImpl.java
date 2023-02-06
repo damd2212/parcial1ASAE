@@ -233,7 +233,7 @@ public class EstudianteServiceImpl implements IEstudianteService {
 
     public ResponseEntity<List<EstudianteDTO>> buscarPorNombresApellidosEmail(String nombres, String apellidos, String correoElectronico) {
         List<Estudiante> estudiantesEncontrados = this.servicioAccesoBDestudiante.findByNombresIgnoreCaseContainingOrApellidosIgnoreCaseContainingOrCorreoElectronicoIgnoreCaseContaining(nombres, apellidos, correoElectronico);
-        List<EstudianteDTO> estudiantesEncontradosDTO =this.estudianteModelMapper.map(estudiantesEncontrados, new TypeToken<List<EstudianteDTO>>(){}.getType());
+        List<EstudianteDTO> estudiantesEncontradosDTO =this.estudianteModelMapperpuntof.map(estudiantesEncontrados, new TypeToken<List<EstudianteDTO>>(){}.getType());
         if(estudiantesEncontradosDTO.size()<=0){
            return new ResponseEntity<List<EstudianteDTO>>(estudiantesEncontradosDTO, HttpStatus.NO_CONTENT);
         }
@@ -243,7 +243,7 @@ public class EstudianteServiceImpl implements IEstudianteService {
     @Override
     public ResponseEntity<List<EstudianteDTO>> findByIdEnConjunto(Collection<Integer> conjuntoIds) {
         List<Estudiante> estudiantesEncontrados = this.servicioAccesoBDestudiante.findByIdPersonaIn(conjuntoIds);
-        List<EstudianteDTO> estudiantesEncontradosDTO =this.estudianteModelMapper.map(estudiantesEncontrados, new TypeToken<List<EstudianteDTO>>(){}.getType());
+        List<EstudianteDTO> estudiantesEncontradosDTO =this.estudianteModelMapperpuntof.map(estudiantesEncontrados, new TypeToken<List<EstudianteDTO>>(){}.getType());
         if(estudiantesEncontradosDTO.size()<=0){
             return new ResponseEntity<List<EstudianteDTO>>(estudiantesEncontradosDTO, HttpStatus.NO_CONTENT);
          }
