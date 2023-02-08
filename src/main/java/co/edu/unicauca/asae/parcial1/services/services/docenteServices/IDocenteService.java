@@ -10,6 +10,7 @@ public interface IDocenteService {
     public ResponseEntity<?> save(DocenteDTO prmDocente);
     public ResponseEntity<DocenteDTO> findById(int prmId);
     public List<DocenteDTO> findAll();
+    public ResponseEntity<?> findAlln();
     public ResponseEntity<?> register(DocenteDTO prmDocente);
     public DocenteDTO existeDocenteConTipoYNumeroIdentificacion(String tipoIdentificacion, String noIdentificacion);
 }

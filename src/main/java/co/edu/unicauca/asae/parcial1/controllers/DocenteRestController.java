@@ -54,4 +54,11 @@ public class DocenteRestController {
         ResponseEntity<DocenteDTO> objRespuesta = new ResponseEntity<DocenteDTO>(objDocente, HttpStatus.OK);
         return objRespuesta;
     }
+
+	@GetMapping("/docentes")
+	public ResponseEntity<?> findAll() {
+		ResponseEntity<?> response = docenteService.findAlln();
+		return response;
+	}
+
 }

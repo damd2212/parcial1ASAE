@@ -55,6 +55,7 @@ public class DocenteServiceImpl implements IDocenteService{
         }
         return new ResponseEntity<DocenteDTO>(objDocenteDTO, HttpStatus.OK);
     }
+
     @Override
     @Transactional
     public List<DocenteDTO> findAll(){
@@ -62,6 +63,7 @@ public class DocenteServiceImpl implements IDocenteService{
         List<DocenteDTO> rta=this.modelMapper.map(obj, new TypeToken<List<DocenteDTO>>(){}.getType());
         return rta;
     }
+
     @Override
     public ResponseEntity<?> register(DocenteDTO prmDocente) {
         Docente objDocente = this.servicioAccesoBaseDatos.findDocenteByIdAndTipo(prmDocente.getNoIdentificacion(), prmDocente.getTipoIdentificacion());
@@ -95,6 +97,14 @@ public class DocenteServiceImpl implements IDocenteService{
             objDocenteDTO=this.modelMapper.map(objDocenteR, DocenteDTO.class);
         }
         return objDocenteDTO;
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<List<DocenteDTO>> findAlln(){
+        Iterable<Docente> obj=this.servicioAccesoBaseDatos.findAll();
+        List<DocenteDTO> rta=this.modelMapper.map(obj, new TypeToken<List<DocenteDTO>>(){}.getType());   
+        return new ResponseEntity<List<DocenteDTO>>(rta, HttpStatus.OK);
     }
 
 }
