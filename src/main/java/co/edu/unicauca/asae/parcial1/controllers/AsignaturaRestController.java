@@ -39,6 +39,12 @@ public class AsignaturaRestController {
 		return response;
 	}
 
+	@GetMapping("/asignaturas")
+	public ResponseEntity<?> findAll() {
+		ResponseEntity<?> response = asignaturaService.findAll();
+		return response;
+	}
+
 	/* 
 	@GetMapping("/asignaturash/{id}")
 	public AsignaturaDTO findByIdH(@PathVariable Integer id) {

@@ -1,7 +1,6 @@
 package co.edu.unicauca.asae.parcial1.controllers;
 
 import javax.validation.Valid;
-import javax.validation.constraints.Positive;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;

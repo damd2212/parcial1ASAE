@@ -1,7 +1,5 @@
 package co.edu.unicauca.asae.parcial1.services.services.asignaturaServices;
 
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import org.modelmapper.ModelMapper;
@@ -40,9 +38,14 @@ public class AsignaturaServiceImpl implements IAsignturaService {
     @Autowired
     @Qualifier("mapperpuntoh")
     private ModelMapper modelMapperH;
+
     @Autowired
     @Qualifier("mapperbase")
     private ModelMapper modelMapperB;
+
+    @Autowired
+    @Qualifier("mapperAsignaturas")
+    private ModelMapper modelMapperAsig;
     
     @Override
     @Transactional(readOnly = true)
@@ -137,6 +140,14 @@ public class AsignaturaServiceImpl implements IAsignturaService {
         } 
         return new ResponseEntity<String>("No se encontraron asignaturas con el nombre " + nombre, HttpStatus.NO_CONTENT);
         
+    }
+
+    @Override
+    @Transactional
+    public ResponseEntity<List<AsignaturaDTO>> findAll(){
+        Iterable<Asignatura> obj=this.servicioAccesoBaseDatos.findAll();
+        List<AsignaturaDTO> rta=this.modelMapperAsig.map(obj, new TypeToken<List<AsignaturaDTO>>(){}.getType());   
+        return new ResponseEntity<List<AsignaturaDTO>>(rta, HttpStatus.OK);
     }
 
 }

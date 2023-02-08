@@ -91,4 +91,12 @@ public class Mapper {
         return objMapper;
     }
 
+    @Bean(name = "mapperAsignaturas")
+    public ModelMapper modelMapperAsigDoc(){
+        ModelMapper objMapper = new ModelMapper();
+        TypeMap<Asignatura, AsignaturaDTO> mapa = objMapper.emptyTypeMap(Asignatura.class, AsignaturaDTO.class);
+        mapa.addMappings(m -> m.skip(AsignaturaDTO::setListaDocentes)).implicitMappings();
+        return objMapper;
+    }
+
 }

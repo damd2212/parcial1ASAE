@@ -11,4 +11,6 @@ public interface IAsignturaService {
     public AsignaturaDTO findByIdPH(Integer id);
     */
     public ResponseEntity<?> buscarPorNombre(String nombre);
+
+    public ResponseEntity<?> findAll();
 }
