@@ -74,7 +74,7 @@ public class EstudianteServiceImpl implements IEstudianteService {
     @Override
     @Transactional(readOnly = false)
     public ResponseEntity<EstudianteDTO> update(Integer id, EstudianteDTO estudiante) {
-        this.servicioAccesoBDestudiante.deleteTelefonos(id);
+        
         Optional<Estudiante> optional = this.servicioAccesoBDestudiante.findById(id);
         if (!optional.isPresent()) {
             EntidadNoExisteException objNoExisteException = new EntidadNoExisteException("El estudiante con id " + id + " no existe en la base de datos");
@@ -114,13 +114,10 @@ public class EstudianteServiceImpl implements IEstudianteService {
                 objDireccionAlmacenada.setCiudad(estudiante.getObjDireccion().getCiudad());
                 objDireccionAlmacenada.setDireccionResidencia(estudiante.getObjDireccion().getDireccionResidencia());
                 objDireccionAlmacenada.setPais(estudiante.getObjDireccion().getPais());
-                estudiante.getListaTelefonos().forEach(t ->t.setIdTelefono(null) );
-                List<Telefono> listaTelefonosNuevos = this.estudianteModelMapper.map(estudiante.getListaTelefonos(),new TypeToken<List<Telefono>>(){}.getType());
+                List<Telefono> listaTelefonosAlmacenados=objEstudianteAlmacenado.getListaTelefonos();
+                List<TelefonoDTO> listaTelefonosNuevos =estudiante.getListaTelefonos();
                 
-                objEstudianteAlmacenado.setListaTelefonos(listaTelefonosNuevos);
-                objEstudianteAlmacenado.getListaTelefonos().forEach(t ->t.setObjEstudiante(objEstudianteAlmacenado) );
-                
-                  /* Integer index = 0;
+                 Integer index = 0;
                 for (TelefonoDTO telefono : listaTelefonosNuevos) {
                     index = existe(listaTelefonosAlmacenados, telefono.getIdTelefono());
                     if (index != -1) {
@@ -128,7 +125,7 @@ public class EstudianteServiceImpl implements IEstudianteService {
                         listaTelefonosAlmacenados.get(index).setNumero(telefono.getNumero());
                         listaTelefonosAlmacenados.get(index).setTipo(telefono.getTipo());
                     }
-                }  */
+                }  
                 Estudiante estudianteActualizado = this.servicioAccesoBDestudiante.save(objEstudianteAlmacenado);
                 estudianteDTOActualizado = this.estudianteModelMapperpuntof.map(estudianteActualizado, EstudianteDTO.class);
                 
