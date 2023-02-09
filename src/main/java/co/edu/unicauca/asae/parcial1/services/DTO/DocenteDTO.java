@@ -1,6 +1,9 @@
 package co.edu.unicauca.asae.parcial1.services.DTO;
 
 import java.util.List;
+
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 import com.fasterxml.jackson.annotation.JsonBackReference;
@@ -10,12 +13,15 @@ import lombok.Setter;
 @Getter @Setter
 public class DocenteDTO extends PersonaDTO {
     
+	@NotEmpty(message = "{docente.universidad.empty}")
     @Size(min=5, max = 30, message ="{docente.universidad.size}")
     private String universidad;
-
+	
+	@NotEmpty(message = "{docente.tipoDocente.empty}")
     @Size(min=5, max = 20, message ="{docente.tipoDocente.size}")
     private String tipoDocente;
-
+	
+	@NotNull(message = "{docente.salario.empty}")
     @Positive(message = "{docente.salario.positive}")
     private float salario;
 

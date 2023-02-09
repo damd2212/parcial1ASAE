@@ -31,6 +31,6 @@ public interface IEstudianteService {
 
     public EstudianteDTO existeEstudianteConTipoYNumeroIdentificacion(String tipoIdentificacion,String noIdentificacion);
     public ResponseEntity<List<EstudianteDTO>> findByIdEnConjunto(Collection<Integer> conjuntoIds);
-    
+    public ResponseEntity<EstudianteDTO> findByEmail(String correoElectronico);
 
 }
