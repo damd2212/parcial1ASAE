@@ -25,11 +25,11 @@ public class EstudianteDTO extends PersonaDTO{
 
 
     @Valid
-    @NotNull(message = "estudiante.direccion.notnull")
+    @NotNull(message = "{estudiante.direccion.notnull}")
     private DireccionDTO objDireccion;
     
     @Valid
-    @Size(min = 2,message = "estudiante.telefonos.min")
+    @Size(min = 2,message = "{estudiante.telefonos.min}")
     private List<TelefonoDTO> listaTelefonos;
 
     public EstudianteDTO(){

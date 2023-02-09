@@ -1,5 +1,6 @@
 package co.edu.unicauca.asae.parcial1.services.services.estudianteServices;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
@@ -73,7 +74,7 @@ public class EstudianteServiceImpl implements IEstudianteService {
     @Override
     @Transactional(readOnly = false)
     public ResponseEntity<EstudianteDTO> update(Integer id, EstudianteDTO estudiante) {
-
+        this.servicioAccesoBDestudiante.deleteTelefonos(id);
         Optional<Estudiante> optional = this.servicioAccesoBDestudiante.findById(id);
         if (!optional.isPresent()) {
             EntidadNoExisteException objNoExisteException = new EntidadNoExisteException("El estudiante con id " + id + " no existe en la base de datos");
@@ -113,9 +114,13 @@ public class EstudianteServiceImpl implements IEstudianteService {
                 objDireccionAlmacenada.setCiudad(estudiante.getObjDireccion().getCiudad());
                 objDireccionAlmacenada.setDireccionResidencia(estudiante.getObjDireccion().getDireccionResidencia());
                 objDireccionAlmacenada.setPais(estudiante.getObjDireccion().getPais());
-                List<TelefonoDTO> listaTelefonosNuevos = estudiante.getListaTelefonos();
-                List<Telefono> listaTelefonosAlmacenados = objEstudianteAlmacenado.getListaTelefonos();
-                Integer index = 0;
+                estudiante.getListaTelefonos().forEach(t ->t.setIdTelefono(null) );
+                List<Telefono> listaTelefonosNuevos = this.estudianteModelMapper.map(estudiante.getListaTelefonos(),new TypeToken<List<Telefono>>(){}.getType());
+                
+                objEstudianteAlmacenado.setListaTelefonos(listaTelefonosNuevos);
+                objEstudianteAlmacenado.getListaTelefonos().forEach(t ->t.setObjEstudiante(objEstudianteAlmacenado) );
+                
+                  /* Integer index = 0;
                 for (TelefonoDTO telefono : listaTelefonosNuevos) {
                     index = existe(listaTelefonosAlmacenados, telefono.getIdTelefono());
                     if (index != -1) {
@@ -123,7 +128,7 @@ public class EstudianteServiceImpl implements IEstudianteService {
                         listaTelefonosAlmacenados.get(index).setNumero(telefono.getNumero());
                         listaTelefonosAlmacenados.get(index).setTipo(telefono.getTipo());
                     }
-                }
+                }  */
                 Estudiante estudianteActualizado = this.servicioAccesoBDestudiante.save(objEstudianteAlmacenado);
                 estudianteDTOActualizado = this.estudianteModelMapperpuntof.map(estudianteActualizado, EstudianteDTO.class);
                 
@@ -143,6 +148,16 @@ public class EstudianteServiceImpl implements IEstudianteService {
     private Integer existe(List<Telefono> listTelefonosAlmacenados, Integer idTelefonoActualizado) {
         Integer index = 0;
         for (Telefono telefono : listTelefonosAlmacenados) {
+            if (telefono.getIdTelefono() == idTelefonoActualizado) {
+                return index;
+            }
+            index++;
+        }
+        return -1;
+    }
+    private Integer existe2(List<TelefonoDTO> listTelefonosAlmacenados, Integer idTelefonoActualizado) {
+        Integer index = 0;
+        for (TelefonoDTO telefono : listTelefonosAlmacenados) {
             if (telefono.getIdTelefono() == idTelefonoActualizado) {
                 return index;
             }
