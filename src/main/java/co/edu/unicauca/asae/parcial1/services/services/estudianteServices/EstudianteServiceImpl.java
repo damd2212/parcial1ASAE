@@ -287,4 +287,17 @@ public class EstudianteServiceImpl implements IEstudianteService {
         return new ResponseEntity<List<EstudianteDTO>>(estudiantesDTO,HttpStatus.OK);
     }
 
+	@Override
+	public ResponseEntity<EstudianteDTO> findByEmail(String correoElectronico) {
+		
+		Estudiante objEstudiante = this.servicioAccesoBDestudiante.findByCorreoElectronico(correoElectronico);
+        if(objEstudiante!=null){
+        	EstudianteDTO estudianteDTO = this.estudianteModelMapperpuntof.map(objEstudiante, EstudianteDTO.class);
+            return new ResponseEntity<EstudianteDTO>(estudianteDTO, HttpStatus.OK);
+        }else{
+            EntidadNoExisteException objNoExisteException = new EntidadNoExisteException("El estudiante con correo " + correoElectronico + " no existe en la base de datos");
+            throw objNoExisteException;
+        }
+	}
+
 }

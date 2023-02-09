@@ -113,4 +113,10 @@ public class EstudianteRestController {
         ResponseEntity<List<EstudianteDTO>> response = this.estudianteService.findAll();
         return response;
     }
+    
+    @GetMapping("/estudiantes/buscarPorEmail")
+    public ResponseEntity<EstudianteDTO> buscarPorEmail(@RequestParam String correoElectronico){
+    	ResponseEntity<EstudianteDTO> response = this.estudianteService.findByEmail(correoElectronico);
+    	return response;
+    }
 }
