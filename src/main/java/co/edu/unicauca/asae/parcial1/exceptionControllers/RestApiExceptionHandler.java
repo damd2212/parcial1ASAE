@@ -24,6 +24,7 @@ import co.edu.unicauca.asae.parcial1.exceptionControllers.exceptions.ErrorUtils;
 import co.edu.unicauca.asae.parcial1.exceptionControllers.exceptions.ReglaNegocioExcepcion;
 import co.edu.unicauca.asae.parcial1.exceptionControllers.exceptions.Error;
 import co.edu.unicauca.asae.parcial1.exceptionControllers.exceptions.ErrorAlmacenamientoDBException;
+import co.edu.unicauca.asae.parcial1.exceptionControllers.exceptions.NoContentException;
 
 @ControllerAdvice
 public class RestApiExceptionHandler {
@@ -50,6 +51,20 @@ public class RestApiExceptionHandler {
                             .setUrl(req.getRequestURL().toString()).setMetodo(req.getMethod());
             return new ResponseEntity<>(error, HttpStatus.NOT_ACCEPTABLE);
     }
+
+
+    @ExceptionHandler(NoContentException.class)
+    public ResponseEntity<Error> handleGenericException(final HttpServletRequest req,
+                    final NoContentException ex, final Locale locale) {
+            final Error error = ErrorUtils
+                            .crearError(CodigoError.NO_CONTENT_LIST.getCodigo(),
+                                            String.format("%s, %s", CodigoError.NO_CONTENT_LIST.getLlaveMensaje(),
+                                                            ex.getMessage()),
+                                            HttpStatus.NOT_FOUND.value())
+                            .setUrl(req.getRequestURL().toString()).setMetodo(req.getMethod());
+            return new ResponseEntity<>(error, HttpStatus.NOT_FOUND);
+    }
+
 
     @ExceptionHandler(EntidadYaExisteException.class)
     public ResponseEntity<Error> handleGenericException(final HttpServletRequest req,

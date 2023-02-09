@@ -1,5 +1,5 @@
-INSERT INTO `docente` (`noIdentificacion`, `tipoIdentificacion`, `nombres`,`apellidos`,`universidad`,`tipoDocente`,`salario`) VALUES ('103424', 'Cedula', 'Laura','Gomez','Unicauca','Planta',1000000.0);
-INSERT INTO `docente` (`noIdentificacion`, `tipoIdentificacion`, `nombres`,`apellidos`,`universidad`,`tipoDocente`,`salario`) VALUES ('5464', 'Cedula', 'Juan','Perez','Unicauca','Planta',1200000.0);
+INSERT INTO `docente` (`noIdentificacion`, `tipoIdentificacion`, `nombres`,`apellidos`,`universidad`,`tipoDocente`,`salario`) VALUES ('103424', 'Cedula de ciudadania', 'Laura','Gomez','Unicauca','Planta',1000000.0);
+INSERT INTO `docente` (`noIdentificacion`, `tipoIdentificacion`, `nombres`,`apellidos`,`universidad`,`tipoDocente`,`salario`) VALUES ('5464', 'Cedula de ciudadania', 'Juan','Perez','Unicauca','Planta',1200000.0);
 
 INSERT INTO `asignaturas` (`nombre`) VALUES ('Sistemas distribuidos');
 INSERT INTO `asignaturas` (`nombre`) VALUES ('Sistemas operativos');
@@ -21,9 +21,9 @@ INSERT INTO `Docentes_Asignaturas` (`idDocente`,`idAsignatura`) VALUES (1,1);
 INSERT INTO `Docentes_Asignaturas` (`idDocente`,`idAsignatura`) VALUES (2,1);
 
 
-INSERT INTO estudiante (NOIDENTIFICACION, TIPOIDENTIFICACION, NOMBRES,APELLIDOS,FECHAINGRESO,CORREOELECTRONICO) VALUES ('10611','Cedula','Danny','Diaz','2017-07-22','danny@unicauca.edu.co')
-INSERT INTO estudiante (NOIDENTIFICACION, TIPOIDENTIFICACION, NOMBRES,APELLIDOS,FECHAINGRESO,CORREOELECTRONICO) VALUES ('10612','Cedula','Jhon','Zuniga','2017-08-25','jhon@unicauca.edu.co')
-INSERT INTO estudiante (NOIDENTIFICACION, TIPOIDENTIFICACION, NOMBRES,APELLIDOS,FECHAINGRESO,CORREOELECTRONICO) VALUES ('10613','Cedula','Carlos','Duran','2017-09-25','carlos@unicauca.edu.co')
+INSERT INTO estudiante (NOIDENTIFICACION, TIPOIDENTIFICACION, NOMBRES,APELLIDOS,FECHAINGRESO,CORREOELECTRONICO) VALUES ('10611','Cedula de ciudadania','Danny','Diaz','2017-07-22','danny@unicauca.edu.co')
+INSERT INTO estudiante (NOIDENTIFICACION, TIPOIDENTIFICACION, NOMBRES,APELLIDOS,FECHAINGRESO,CORREOELECTRONICO) VALUES ('10612','Cedula de ciudadania','Jhon','Zuniga','2017-08-25','jhon@unicauca.edu.co')
+INSERT INTO estudiante (NOIDENTIFICACION, TIPOIDENTIFICACION, NOMBRES,APELLIDOS,FECHAINGRESO,CORREOELECTRONICO) VALUES ('10613','Cedula de extranjeria','Carlos','Duran','2017-09-25','carlos@unicauca.edu.co')
 
 INSERT INTO direcciones (IDESTUDIANTE, CIUDAD, DIRECCIONRESIDENCIA,PAIS) VALUES (1,'Popayan','Calle 5C # 57A-58','Colombia')
 INSERT INTO direcciones (IDESTUDIANTE, CIUDAD, DIRECCIONRESIDENCIA,PAIS) VALUES (2,'Popayan','Cra 78 # 2- 26','Colombia')

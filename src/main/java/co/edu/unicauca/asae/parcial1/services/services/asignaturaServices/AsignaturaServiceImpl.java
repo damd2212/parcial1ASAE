@@ -13,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import co.edu.unicauca.asae.parcial1.exceptionControllers.exceptions.ReglaNegocioExcepcion;
 import co.edu.unicauca.asae.parcial1.exceptionControllers.exceptions.EntidadNoExisteException;
 import co.edu.unicauca.asae.parcial1.exceptionControllers.exceptions.EntidadYaExisteException;
+import co.edu.unicauca.asae.parcial1.exceptionControllers.exceptions.NoContentException;
 import co.edu.unicauca.asae.parcial1.models.Asignatura;
 import co.edu.unicauca.asae.parcial1.models.Curso;
 import co.edu.unicauca.asae.parcial1.models.Docente;
@@ -137,8 +138,10 @@ public class AsignaturaServiceImpl implements IAsignturaService {
             List<AsignaturaDTO>asinaturasDTO = this.modelMapperB.map(asignaturas, new TypeToken<List<AsignaturaDTO>>() {}.getType());    
             return new ResponseEntity<List<AsignaturaDTO>>(asinaturasDTO,HttpStatus.OK);
 
-        } 
-        return new ResponseEntity<String>("No se encontraron asignaturas con el nombre " + nombre, HttpStatus.NO_CONTENT);
+        }else{
+            NoContentException objNoContentListException = new NoContentException("No se encontraron asignaturas con el nombre " + nombre);
+            throw objNoContentListException;
+        }
         
     }
 

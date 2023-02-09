@@ -15,6 +15,7 @@ import org.springframework.transaction.annotation.Transactional;
 import co.edu.unicauca.asae.parcial1.exceptionControllers.exceptions.EntidadYaExisteException;
 import co.edu.unicauca.asae.parcial1.exceptionControllers.exceptions.ErrorAlmacenamientoDBException;
 import co.edu.unicauca.asae.parcial1.exceptionControllers.exceptions.ReglaNegocioExcepcion;
+import co.edu.unicauca.asae.parcial1.exceptionControllers.exceptions.NoContentException;
 import co.edu.unicauca.asae.parcial1.exceptionControllers.exceptions.EntidadNoExisteException;
 import co.edu.unicauca.asae.parcial1.models.Direccion;
 import co.edu.unicauca.asae.parcial1.models.Estudiante;
@@ -247,7 +248,8 @@ public class EstudianteServiceImpl implements IEstudianteService {
         List<Estudiante> estudiantesEncontrados = this.servicioAccesoBDestudiante.findByNombresIgnoreCaseContainingOrApellidosIgnoreCaseContainingOrCorreoElectronicoIgnoreCaseContaining(nombres, apellidos, correoElectronico);
         List<EstudianteDTO> estudiantesEncontradosDTO =this.estudianteModelMapperpuntof.map(estudiantesEncontrados, new TypeToken<List<EstudianteDTO>>(){}.getType());
         if(estudiantesEncontradosDTO.size()<=0){
-           return new ResponseEntity<List<EstudianteDTO>>(estudiantesEncontradosDTO, HttpStatus.NO_CONTENT);
+            NoContentException objNoContentListException = new NoContentException("No se encontraron estudiantes con el nombre, apellido y email ingresados");
+            throw objNoContentListException;
         }
         return new ResponseEntity<List<EstudianteDTO>>(estudiantesEncontradosDTO, HttpStatus.OK);
     }
@@ -257,9 +259,10 @@ public class EstudianteServiceImpl implements IEstudianteService {
         List<Estudiante> estudiantesEncontrados = this.servicioAccesoBDestudiante.findByIdPersonaIn(conjuntoIds);
         List<EstudianteDTO> estudiantesEncontradosDTO =this.estudianteModelMapperpuntof.map(estudiantesEncontrados, new TypeToken<List<EstudianteDTO>>(){}.getType());
         if(estudiantesEncontradosDTO.size()<=0){
-            return new ResponseEntity<List<EstudianteDTO>>(estudiantesEncontradosDTO, HttpStatus.NO_CONTENT);
-         }
-         return new ResponseEntity<List<EstudianteDTO>>(estudiantesEncontradosDTO, HttpStatus.OK);
+            NoContentException objNoContentListException = new NoContentException("No se encontraron estudiantes con los ids ingresados");
+            throw objNoContentListException;
+        }
+        return new ResponseEntity<List<EstudianteDTO>>(estudiantesEncontradosDTO, HttpStatus.OK);
     }
 
     @Override
@@ -282,7 +285,9 @@ public class EstudianteServiceImpl implements IEstudianteService {
         Iterable<Estudiante> estudiantes = this.servicioAccesoBDestudiante.findAll();
         List<EstudianteDTO> estudiantesDTO = this.estudianteModelMapperpuntof.map(estudiantes,new TypeToken<List<EstudianteDTO>>(){}.getType());
         if(estudiantesDTO.size() <= 0){
-            return new ResponseEntity<List<EstudianteDTO>>(estudiantesDTO,HttpStatus.NO_CONTENT);
+            NoContentException objNoContentListException = new NoContentException("No existen estudiantes registradros en la bd");
+            throw objNoContentListException;
+            //return new ResponseEntity<List<EstudianteDTO>>(estudiantesDTO,HttpStatus.NO_CONTENT);
         }
         return new ResponseEntity<List<EstudianteDTO>>(estudiantesDTO,HttpStatus.OK);
     }
