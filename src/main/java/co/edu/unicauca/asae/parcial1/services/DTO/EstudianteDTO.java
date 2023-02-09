@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.PastOrPresent;
+import javax.validation.constraints.Size;
 import javax.validation.Valid;
 import javax.validation.constraints.Email;
 import lombok.Getter;
@@ -24,9 +25,11 @@ public class EstudianteDTO extends PersonaDTO{
 
 
     @Valid
+    @NotNull(message = "estudiante.direccion.notnull")
     private DireccionDTO objDireccion;
     
     @Valid
+    @Size(min = 2,message = "estudiante.telefonos.min")
     private List<TelefonoDTO> listaTelefonos;
 
     public EstudianteDTO(){
